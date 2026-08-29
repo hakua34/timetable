@@ -1,19 +1,15 @@
 import {
     auth,
     googleProvider
-    
 } from "./firebase.js";
 
 import {
     signInWithPopup,
-    signInWithRedirect,
-    getRedirectResult,
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
 const loginScreen =
     document.getElementById("login-screen");
 
@@ -59,41 +55,6 @@ const logoutButton =
 const debugSettings =
     document.getElementById("debug-settings");
 
-// ========================================
-// Googleリダイレクト後の処理
-// ========================================
-
-getRedirectResult(auth)
-    .then(result => {
-
-        if (result?.user) {
-
-            console.log(
-                "Googleリダイレクトログイン成功:",
-                result.user.email
-            );
-
-        }
-
-    })
-    .catch(error => {
-
-        console.error(
-            "リダイレクトログイン結果取得エラー:",
-            error
-        );
-
-        alert(
-`Googleログイン後の処理に失敗しました
-
-code:
-${error.code || "なし"}
-
-message:
-${error.message || "なし"}`
-        );
-
-    });
 
 // ========================================
 // Googleログイン
@@ -105,29 +66,14 @@ googleLoginButton.addEventListener(
 
         try {
 
-            const isSafari =
-                /^((?!chrome|android).)*safari/i
-                    .test(navigator.userAgent);
-
-            const isMobile =
-                /iPhone|iPad|iPod|Android/i
-                    .test(navigator.userAgent);
-
-            if (isSafari || isMobile) {
-
-                await signInWithRedirect(
-                    auth,
-                    googleProvider
-                );
-
-            } else {
-
+            const result =
                 await signInWithPopup(
                     auth,
                     googleProvider
                 );
 
-            }
+            // ★ Safariでもここで即切替
+            showApp(result.user);
 
         } catch (error) {
 
@@ -268,86 +214,26 @@ adminPassword.addEventListener(
 // ログイン状態
 // ========================================
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(
+    auth,
+    user => {
 
-    const editButton =
-        document.getElementById("day-edit-button");
+        console.log(
+            "認証状態:",
+            user?.email || "未ログイン"
+        );
 
-    if (user) {
+        if (user) {
 
-        console.log("ログイン:", user.email);
+            showApp(user);
 
-        // ログイン画面を完全に消す
-        loginScreen.hidden = true;
-        loginScreen.style.display = "none";
-        loginScreen.setAttribute("aria-hidden", "true");
+        } else {
 
-        // アプリ本体を表示
-        app.hidden = false;
-        app.style.display = "block";
-
-        const isAdmin =
-            user.email === "ageishi@timetable.local";
-
-        if (editButton) {
-            editButton.hidden = !isAdmin;
+            showLogin();
         }
 
-        if (accountEmail) {
-            accountEmail.textContent =
-                isAdmin
-                    ? "ageishi"
-                    : user.email || "Googleユーザー";
-        }
-
-        if (accountRole) {
-            accountRole.textContent =
-                isAdmin
-                    ? "管理者"
-                    : "一般ユーザー";
-        }
-
-        if (debugSettings) {
-            debugSettings.hidden = !isAdmin;
-        }
-
-        document.body.dataset.role =
-            isAdmin ? "admin" : "user";
-
-
-    } else {
-
-        console.log("未ログイン");
-
-        // ログイン画面表示
-        loginScreen.hidden = false;
-        loginScreen.style.display = "flex";
-        loginScreen.removeAttribute("aria-hidden");
-
-        // アプリ非表示
-        app.hidden = true;
-        app.style.display = "none";
-
-        if (editButton) {
-            editButton.hidden = true;
-        }
-
-        if (accountEmail) {
-            accountEmail.textContent = "---";
-        }
-
-        if (accountRole) {
-            accountRole.textContent = "---";
-        }
-
-        if (debugSettings) {
-            debugSettings.hidden = true;
-        }
-
-        delete document.body.dataset.role;
     }
-
-});
+);
 
 logoutButton?.addEventListener(
     "click",
@@ -380,6 +266,81 @@ logoutButton?.addEventListener(
         }
     }
 );
+
+function showApp(user) {
+
+    const editButton =
+        document.getElementById("day-edit-button");
+
+    const isAdmin =
+        user.email === "ageishi@timetable.local";
+
+
+    // ログイン画面を完全に消す
+    loginScreen.hidden = true;
+    loginScreen.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+
+    // アプリ表示
+    app.hidden = false;
+    app.style.removeProperty("display");
+
+
+    // 管理者判定
+    if (editButton) {
+        editButton.hidden = !isAdmin;
+    }
+
+
+    if (accountEmail) {
+        accountEmail.textContent =
+            isAdmin
+                ? "ageishi"
+                : user.email || "Googleユーザー";
+    }
+
+
+    if (accountRole) {
+        accountRole.textContent =
+            isAdmin
+                ? "管理者"
+                : "一般ユーザー";
+    }
+
+
+    if (debugSettings) {
+        debugSettings.hidden = !isAdmin;
+    }
+
+
+    document.body.dataset.role =
+        isAdmin ? "admin" : "user";
+}
+
+function showLogin() {
+
+    loginScreen.hidden = false;
+
+    loginScreen.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    app.hidden = true;
+    app.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+    delete document.body.dataset.role;
+}
+
 
 // ========================================
 // 他ファイルからログアウト用
