@@ -270,71 +270,67 @@ adminPassword.addEventListener(
 
 onAuthStateChanged(auth, user => {
 
-    console.log("認証状態:", user);
-
     const editButton =
         document.getElementById("day-edit-button");
 
     if (user) {
 
+        console.log("ログイン:", user.email);
+
+        // ログイン画面を完全に消す
         loginScreen.hidden = true;
         loginScreen.style.display = "none";
+        loginScreen.setAttribute("aria-hidden", "true");
 
+        // アプリ本体を表示
         app.hidden = false;
-        app.style.display = "";
+        app.style.display = "block";
 
         const isAdmin =
             user.email === "ageishi@timetable.local";
 
-
-        // 管理者編集ボタン
         if (editButton) {
             editButton.hidden = !isAdmin;
         }
 
-
-        // アカウント情報
         if (accountEmail) {
-
             accountEmail.textContent =
                 isAdmin
                     ? "ageishi"
                     : user.email || "Googleユーザー";
         }
 
-
         if (accountRole) {
-
             accountRole.textContent =
                 isAdmin
                     ? "管理者"
                     : "一般ユーザー";
         }
 
-
-        // 開発者向け
         if (debugSettings) {
             debugSettings.hidden = !isAdmin;
         }
 
-
         document.body.dataset.role =
             isAdmin ? "admin" : "user";
+
+
     } else {
 
         console.log("未ログイン");
 
+        // ログイン画面表示
         loginScreen.hidden = false;
-        loginScreen.style.display = "";
+        loginScreen.style.display = "flex";
+        loginScreen.removeAttribute("aria-hidden");
 
+        // アプリ非表示
         app.hidden = true;
         app.style.display = "none";
 
         if (editButton) {
             editButton.hidden = true;
         }
-
-        delete document.body.dataset.role;
 
         if (accountEmail) {
             accountEmail.textContent = "---";
@@ -347,6 +343,8 @@ onAuthStateChanged(auth, user => {
         if (debugSettings) {
             debugSettings.hidden = true;
         }
+
+        delete document.body.dataset.role;
     }
 
 });
