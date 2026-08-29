@@ -1,0 +1,1667 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+
+    background: #f5f6f8;
+    color: #202124;
+}
+
+button {
+    font: inherit;
+}
+
+/* =========================
+   APP
+========================= */
+
+#app {
+    max-width: 700px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #fff;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        env(safe-area-inset-top)
+        20px
+        0;
+
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+
+    border-bottom: 1px solid #ececec;
+}
+
+.header-date {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+#header-weekday {
+    color: #777;
+    font-size: 14px;
+}
+
+.header-time {
+    font-size: 25px;
+    font-weight: 650;
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    padding-bottom: 100px;
+}
+
+.page {
+    display: none;
+    padding: 24px 18px;
+}
+
+.page.active {
+    display: block;
+}
+
+
+/* =========================
+   PAGE HEADING
+========================= */
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 23px;
+}
+
+.schedule-badge {
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    background: #f0f1f3;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #666;
+}
+
+
+/* =========================
+   CURRENT
+========================= */
+.break-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 13px 15px;
+
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.break-status span {
+    font-size: 14px;
+    color: #666;
+}
+
+.break-status strong {
+    font-size: 18px;
+}
+
+.after-school {
+    padding: 13px 15px;
+
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+
+    color: #666;
+    font-size: 14px;
+}
+
+.current-area {
+    margin-bottom: 12px;
+}
+
+.current-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+
+    padding: 13px 15px;
+
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+
+    white-space: nowrap;
+}
+
+.current-period {
+    font-size: 13px;
+    color: #777;
+}
+
+.current-name {
+    font-size: 17px;
+}
+
+.current-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.remaining {
+    margin-left: auto;
+
+    font-size: 13px;
+    color: #666;
+}
+
+.remaining strong {
+    font-size: 15px;
+    color: #202124;
+}
+
+/* =========================
+   NEXT
+========================= */
+
+.next-card {
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: #f4f7ff;
+
+    border: 1px solid #e1e7f7;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.04);
+}
+
+.card-label {
+    margin-bottom: 10px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.4px;
+
+    color: #5271c4;
+}
+
+.next-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.period-number {
+    font-size: 15px;
+    color: #666;
+}
+
+.next-subject {
+    font-size: 28px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+.next-time {
+    margin-top: 5px;
+
+    font-size: 14px;
+    color: #666;
+}
+
+.next-details {
+    margin-top: 16px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid #dfe5f2;
+
+    font-size: 14px;
+}
+
+.note {
+    margin-top: 5px;
+
+    color: #555;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+.section {
+    margin-top: 30px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 12px;
+
+    font-size: 16px;
+}
+
+.normal-title {
+    font-size: 18px;
+}
+
+.warning {
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fff0d6;
+    color: #b76a00;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+
+/* =========================
+   CHANGE
+========================= */
+
+.change-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 15px 16px;
+
+    border-radius: 13px;
+
+    background: #fff9ef;
+    border: 1px solid #f3e4c9;
+}
+
+.change-period {
+    min-width: 32px;
+
+    color: #777;
+    font-size: 14px;
+}
+
+.change-subject {
+    font-size: 15px;
+}
+
+.change-subject strong {
+    font-size: 17px;
+}
+
+.arrow {
+    margin: 0 7px;
+
+    color: #999;
+}
+
+.change-room {
+    margin-top: 4px;
+
+    font-size: 13px;
+    color: #777;
+}
+
+
+/* =========================
+   CLASS LIST
+========================= */
+
+.class-list {
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    border: 1px solid #ececec;
+
+    background: #fff;
+}
+
+.class-row {
+    min-height: 57px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.class-row:last-child {
+    border-bottom: none;
+}
+
+.class-period {
+    width: 45px;
+
+    font-size: 13px;
+    color: #777;
+}
+
+.class-name {
+    flex: 1;
+
+    font-size: 16px;
+    font-weight: 550;
+}
+
+.class-time {
+    font-size: 12px;
+    color: #888;
+}
+
+
+/* 終了済み */
+
+.class-row.finished {
+    background: #fafafa;
+    color: #aaa;
+}
+
+.class-row.finished .class-period,
+.class-row.finished .class-time {
+    color: #bbb;
+}
+
+
+/* 現在 */
+
+.class-row.current {
+    background: #f3f6fc;
+    box-shadow: inset 4px 0 0 #607dc5;
+}
+
+.class-row.current .class-name {
+    font-weight: 700;
+}
+
+
+/* 変更 */
+
+.class-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.changed-label {
+    padding: 3px 6px;
+
+    border-radius: 5px;
+
+    background: #fff0d6;
+
+    color: #a96100;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   OTHER PAGES
+========================= */
+
+.simple-page-title {
+    margin: 0 0 25px;
+
+    font-size: 23px;
+}
+
+.placeholder {
+    padding: 35px 20px;
+
+    border-radius: 15px;
+
+    background: #f7f7f7;
+
+    text-align: center;
+
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+    position: fixed;
+
+    left: 50%;
+    bottom: 0;
+
+    transform: translateX(-50%);
+
+    z-index: 200;
+
+    width: min(100%, 700px);
+    height: calc(68px + env(safe-area-inset-bottom));
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    padding-bottom: env(safe-area-inset-bottom);
+
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(18px);
+
+    border-top: 1px solid #e8e8e8;
+}
+
+.nav-item {
+    border: none;
+    background: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    color: #999;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.nav-icon {
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+
+    font-size: 19px;
+}
+
+.nav-item.active {
+    color: #4668bd;
+    font-weight: 600;
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 701px) {
+
+    body {
+        background: #eceef1;
+    }
+
+    #app {
+        box-shadow:
+            0 0 35px rgba(0, 0, 0, 0.06);
+    }
+
+}
+
+/* =========================
+   WEEKLY
+========================= */
+
+.weekly-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.weekly-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+
+    table-layout: fixed;
+}
+
+.weekly-table th {
+    height: 38px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #777;
+}
+
+.weekly-table thead th:first-child {
+    width: 28px;
+}
+
+.weekly-table td {
+    height: 70px;
+
+    padding: 0;
+
+    border-radius: 10px;
+
+    background: #f7f7f8;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+.weekly-period {
+    width: 28px;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    color: #999 !important;
+}
+
+.weekly-subject {
+    width: 100%;
+    height: 100%;
+
+    padding: 5px 2px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #252525;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    word-break: keep-all;
+}
+
+.weekly-subject:active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.weekly-table td.empty {
+    color: #ccc;
+}
+
+
+/* 今日 */
+
+.weekly-table .today-column {
+    background: #f0f4ff;
+}
+
+.weekly-table thead .today-column {
+    color: #4668bd;
+}
+
+
+/* =========================
+   SUBJECT OVERLAY
+========================= */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 2000;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.overlay.show {
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.overlay-background {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0);
+
+    transition: background 0.2s;
+}
+
+.overlay.show .overlay-background {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+/* 下から出る詳細 */
+
+.subject-sheet {
+    position: relative;
+
+    z-index: 1;
+
+    width: min(100%, 700px);
+
+    padding:
+        10px
+        20px
+        calc(25px + env(safe-area-inset-bottom));
+
+    border-radius: 22px 22px 0 0;
+
+    background: #fff;
+
+    transform: translateY(100%);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.overlay.show .subject-sheet {
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 38px;
+    height: 4px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 10px;
+
+    background: #ddd;
+}
+
+.subject-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 24px;
+}
+
+.subject-sheet-header h2 {
+    margin: 3px 0 0;
+
+    font-size: 25px;
+}
+
+.subject-period {
+    font-size: 13px;
+    color: #777;
+}
+
+.sheet-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f1f1f2;
+
+    color: #666;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.subject-detail-row {
+    display: flex;
+    align-items: flex-start;
+
+    padding: 14px 0;
+
+    border-top: 1px solid #eee;
+
+    font-size: 14px;
+}
+
+.detail-label {
+    width: 65px;
+
+    flex-shrink: 0;
+
+    color: #888;
+}
+
+.overlay-open {
+    overflow: hidden;
+}
+
+/* =========================
+   CASSETTE
+========================= */
+
+.cassette-section {
+    margin-top: 32px;
+}
+
+.weekly-subtitle {
+    margin: 0 0 12px;
+
+    font-size: 18px;
+}
+
+.cassette-list {
+    overflow: hidden;
+
+    border: 1px solid #ececec;
+    border-radius: 15px;
+
+    background: #fff;
+}
+
+.cassette-row {
+    width: 100%;
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border: none;
+    border-bottom: 1px solid #eeeeee;
+
+    background: #fff;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.cassette-row:last-child {
+    border-bottom: none;
+}
+
+.cassette-row:active {
+    background: #f5f5f5;
+}
+
+.cassette-period {
+    width: 48px;
+
+    font-size: 13px;
+    color: #777;
+}
+
+.cassette-subject {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* =========================
+   CALENDAR
+========================= */
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.calendar-month {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.calendar-arrow {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f3f3f4;
+
+    font-size: 25px;
+    color: #555;
+
+    cursor: pointer;
+}
+
+
+.calendar-card {
+    padding: 14px;
+
+    border: 1px solid #ececec;
+    border-radius: 17px;
+
+    background: #fff;
+}
+
+
+.calendar-weekdays,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-weekdays {
+    margin-bottom: 6px;
+}
+
+.calendar-weekdays span {
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    color: #888;
+}
+
+
+/* 日付 */
+
+.calendar-day {
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 2px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #333;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: #f4f4f4;
+}
+
+
+/* 今日 */
+
+.calendar-day.today::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 5px;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #5271c4;
+}
+
+
+/* 選択日 */
+
+.calendar-day.selected {
+    background: #5271c4;
+    color: #fff;
+
+    font-weight: 700;
+}
+
+.calendar-day.selected::after {
+    background: #fff;
+}
+
+
+/* 土日 */
+
+.calendar-weekdays .saturday,
+.calendar-day.saturday {
+    color: #5271c4;
+}
+
+.calendar-weekdays .sunday,
+.calendar-day.sunday {
+    color: #c45757;
+}
+
+.calendar-day.selected.saturday,
+.calendar-day.selected.sunday {
+    color: #fff;
+}
+
+
+/* =========================
+   SELECTED DAY
+========================= */
+
+.selected-day-card {
+    margin-top: 22px;
+
+    padding: 18px;
+
+    border: 1px solid #ececec;
+    border-radius: 17px;
+
+    background: #fff;
+}
+
+.selected-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.selected-date {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.selected-weekday {
+    margin-top: 2px;
+
+    font-size: 13px;
+    color: #888;
+}
+
+
+.day-edit-button {
+    padding: 7px 14px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #eef2ff;
+    color: #4668bd;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.day-info-row {
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+
+    border-top: 1px solid #eee;
+}
+
+.day-info-label {
+    width: 85px;
+
+    flex-shrink: 0;
+
+    font-size: 13px;
+    color: #888;
+}
+
+.day-info-row strong {
+    font-size: 14px;
+}
+
+.no-change {
+    font-size: 14px;
+    color: #777;
+}
+
+.no-school-day {
+    padding: 20px 0;
+
+    border-top: 1px solid #eee;
+
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* 今は仮。次で教科名表示に変更 */
+.day-class-preview {
+    display: none;
+}
+
+.day-loading {
+    padding: 22px 0;
+
+    border-top: 1px solid #eee;
+
+    color: #999;
+    font-size: 13px;
+}
+
+
+.has-change {
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background: #fff0d6;
+    color: #a96100;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.calendar-changes {
+    margin-top: 10px;
+
+    border-top: 1px solid #eee;
+}
+
+.calendar-change-item {
+    padding: 13px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.calendar-change-title {
+    font-size: 14px;
+}
+
+.calendar-change-title span {
+    margin: 0 6px;
+    color: #aaa;
+}
+
+.calendar-change-detail {
+    margin-top: 5px;
+
+    font-size: 12px;
+    color: #777;
+}
+
+
+.day-note {
+    margin-top: 15px;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #f7f7f8;
+
+    font-size: 13px;
+}
+
+.day-note-label {
+    margin-bottom: 5px;
+
+    color: #888;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-screen {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: #f5f6f8;
+}
+
+.login-box {
+    width: min(100%, 380px);
+
+    padding: 35px 25px;
+
+    border-radius: 22px;
+
+    background: #fff;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.07);
+}
+
+.login-logo {
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 4px;
+
+    color: #5271c4;
+}
+
+.login-box h1 {
+    margin: 0 0 30px;
+
+    font-size: 25px;
+}
+
+.google-login-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #ddd;
+    border-radius: 11px;
+
+    background: #fff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.login-help {
+    margin: 11px 0 28px;
+
+    font-size: 11px;
+
+    color: #999;
+}
+
+.admin-login-link {
+    border: none;
+    background: transparent;
+
+    color: #777;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+/* 管理者ログイン */
+
+.admin-login-sheet {
+    position: relative;
+    z-index: 1;
+
+    width: min(calc(100% - 35px), 400px);
+
+    margin: auto;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background: #fff;
+}
+
+.admin-login-sheet h2 {
+    margin: 0 0 23px;
+}
+
+.admin-login-sheet label {
+    display: block;
+
+    margin-bottom: 15px;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+.admin-login-sheet input {
+    width: 100%;
+
+    margin-top: 6px;
+    padding: 12px;
+
+    border: 1px solid #ddd;
+    border-radius: 9px;
+
+    font-size: 16px;
+}
+
+.admin-submit,
+.admin-cancel {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 9px;
+
+    cursor: pointer;
+}
+
+.admin-submit {
+    margin-top: 8px;
+
+    background: #5271c4;
+    color: #fff;
+
+    font-weight: 700;
+}
+
+.admin-cancel {
+    margin-top: 8px;
+
+    background: #f3f3f3;
+
+    color: #666;
+}
+
+.login-error {
+    min-height: 20px;
+
+    color: #c44;
+
+    font-size: 12px;
+}
+
+/* =========================
+   DAY EDIT
+========================= */
+
+.day-edit-sheet {
+    position: relative;
+    z-index: 1;
+
+    width: min(calc(100% - 24px), 520px);
+
+    height: min(
+        92dvh,
+        780px
+    );
+
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #fff;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.day-edit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px;
+}
+
+.day-edit-label {
+    margin-bottom: 3px;
+
+    font-size: 11px;
+    color: #999;
+}
+
+.day-edit-header h2 {
+    margin: 0;
+
+    font-size: 21px;
+}
+
+.day-edit-close {
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f3f3f3;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.day-edit-scroll {
+    flex: 1;
+    min-height: 0;
+
+    padding:
+        0
+        20px
+        30px;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.edit-field {
+    margin-bottom: 20px;
+}
+
+.edit-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #666;
+}
+
+.edit-field select,
+.edit-field textarea {
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #ddd;
+    border-radius: 9px;
+
+    background: #fff;
+
+    font-size: 14px;
+}
+
+.edit-section-title {
+    margin: 25px 0 10px;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.edit-period-row {
+    padding: 14px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.edit-period-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 9px;
+}
+
+.edit-period-heading strong {
+    font-size: 13px;
+}
+
+.edit-period-heading span {
+    font-size: 14px;
+}
+
+.edit-period-fields {
+    display: grid;
+    gap: 7px;
+}
+
+.edit-period-fields select,
+.edit-period-fields input {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: #fff;
+
+    font-size: 14px;
+}
+
+.day-edit-actions {
+    flex-shrink: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    padding:
+        12px
+        20px
+        calc(12px + env(safe-area-inset-bottom));
+
+    border-top: 1px solid #eee;
+
+    background: #fff;
+}
+
+.edit-cancel-button,
+.edit-save-button {
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.edit-cancel-button {
+    background: #f2f2f2;
+}
+
+.edit-save-button {
+    background: #5271c4;
+    color: #fff;
+}
+
+.debug-section {
+    margin-top: 35px;
+}
+
+.debug-section h2 {
+    font-size: 14px;
+    color: #888;
+}
+
+.settings-danger-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f3f3f3;
+    color: #c34;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.settings-help {
+    margin-top: 8px;
+
+    font-size: 11px;
+    color: #999;
+}
+
+.edit-time-row {
+    display: grid;
+    grid-template-columns:
+        auto
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 3px;
+}
+
+.edit-time-label {
+    font-size: 12px;
+    font-weight: 700;
+
+    color: #777;
+}
+
+.edit-time-row input {
+    min-width: 0;
+
+    padding: 9px 5px;
+
+    text-align: center;
+}
+
+.edit-custom-subject {
+    background: #fafafa !important;
+}
+
+.edit-custom-subject[hidden] {
+    display: none !important;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+}
+
+.settings-section h2 {
+    margin: 0 0 12px;
+
+    font-size: 14px;
+    color: #777;
+}
+
+.account-card {
+    overflow: hidden;
+
+    border: 1px solid #ececec;
+    border-radius: 14px;
+
+    background: #fff;
+}
+
+.account-row {
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    border-bottom: 1px solid #eee;
+}
+
+.account-row:last-child {
+    border-bottom: none;
+}
+
+.account-row span {
+    font-size: 13px;
+    color: #777;
+}
+
+.account-row strong {
+    max-width: 65%;
+
+    font-size: 13px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.logout-button {
+    width: 100%;
+
+    margin-top: 12px;
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f3f3f3;
+    color: #c44;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
