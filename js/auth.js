@@ -1,23 +1,14 @@
-import {
-    auth,
-    googleProvider
-} from "./firebase.js";
+import { auth } from "./firebase.js";
 
 import {
-    signInWithPopup,
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut
-}
-from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-const loginScreen =
-    document.getElementById("login-screen");
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
 
 const app =
     document.getElementById("app");
-
-const googleLoginButton =
-    document.getElementById("google-login");
 
 const showAdminLogin =
     document.getElementById("show-admin-login");
@@ -57,51 +48,10 @@ const debugSettings =
 
 
 // ========================================
-// Googleログイン
-// ========================================
-
-googleLoginButton.addEventListener(
-    "click",
-    async () => {
-
-        try {
-
-            const result =
-                await signInWithPopup(
-                    auth,
-                    googleProvider
-                );
-
-            // ★ Safariでもここで即切替
-            showApp(result.user);
-
-        } catch (error) {
-
-            console.error(
-                "Googleログイン失敗:",
-                error
-            );
-
-            alert(
-`Googleログインに失敗しました
-
-code:
-${error.code || "なし"}
-
-message:
-${error.message || "なし"}`
-            );
-        }
-
-    }
-);
-
-
-// ========================================
 // 管理者ログイン画面
 // ========================================
 
-showAdminLogin.addEventListener(
+showAdminLogin?.addEventListener(
     "click",
     () => {
 
@@ -110,7 +60,6 @@ showAdminLogin.addEventListener(
         adminLoginError.textContent = "";
 
         adminId.focus();
-
     }
 );
 
@@ -125,12 +74,13 @@ function closeAdminLogin() {
 }
 
 
-adminCancel.addEventListener(
+adminCancel?.addEventListener(
     "click",
     closeAdminLogin
 );
 
-adminBackground.addEventListener(
+
+adminBackground?.addEventListener(
     "click",
     closeAdminLogin
 );
@@ -140,7 +90,7 @@ adminBackground.addEventListener(
 // 管理者ログイン
 // ========================================
 
-adminLoginButton.addEventListener(
+adminLoginButton?.addEventListener(
     "click",
     async () => {
 
@@ -159,14 +109,6 @@ adminLoginButton.addEventListener(
             return;
         }
 
-
-        /*
-            見た目上:
-            ageishi
-
-            Firebase内部:
-            ageishi@timetable.local
-        */
 
         const email =
             `${id}@timetable.local`;
@@ -192,48 +134,54 @@ adminLoginButton.addEventListener(
             adminLoginError.textContent =
                 "IDまたはパスワードが違います";
         }
-
-    }
-);
-
-
-// Enterでもログイン
-adminPassword.addEventListener(
-    "keydown",
-    event => {
-
-        if (event.key === "Enter") {
-            adminLoginButton.click();
-        }
-
     }
 );
 
 
 // ========================================
-// ログイン状態
+// Enterでもログイン
+// ========================================
+
+adminPassword?.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            adminLoginButton.click();
+        }
+    }
+);
+
+
+// ========================================
+// 認証状態
+// ========================================
+//
+// 一般ユーザー
+// → ログイン不要
+//
+// Firebase Authentication
+// → 管理者判定だけに使用
+//
 // ========================================
 
 onAuthStateChanged(
     auth,
     user => {
 
-        console.log(
-            "認証状態:",
-            user?.email || "未ログイン"
-        );
+        const isAdmin =
+            user?.email ===
+            "ageishi@timetable.local";
 
-        if (user) {
-
-            showApp(user);
-
-        } else {
-
-            showLogin();
-        }
-
+        showApp(isAdmin);
     }
 );
+
+
+// ========================================
+// 管理者ログアウト
+// ========================================
 
 logoutButton?.addEventListener(
     "click",
@@ -241,7 +189,7 @@ logoutButton?.addEventListener(
 
         const confirmed =
             confirm(
-                "ログアウトしますか？"
+                "管理者からログアウトしますか？"
             );
 
         if (!confirmed) {
@@ -267,78 +215,83 @@ logoutButton?.addEventListener(
     }
 );
 
-function showApp(user) {
+
+// ========================================
+// アプリ表示・権限切り替え
+// ========================================
+
+function showApp(isAdmin) {
 
     const editButton =
-        document.getElementById("day-edit-button");
+        document.getElementById(
+            "day-edit-button"
+        );
 
-    const isAdmin =
-        user.email === "ageishi@timetable.local";
 
+    // アプリ本体は常に表示
+    app.hidden = false;
 
-    // ログイン画面を完全に消す
-    loginScreen.hidden = true;
-    loginScreen.style.setProperty(
-        "display",
-        "none",
-        "important"
+    app.style.removeProperty(
+        "display"
     );
 
 
-    // アプリ表示
-    app.hidden = false;
-    app.style.removeProperty("display");
-
-
-    // 管理者判定
+    // 編集ボタン
     if (editButton) {
-        editButton.hidden = !isAdmin;
+
+        editButton.hidden =
+            !isAdmin;
     }
 
 
+    // アカウント表示
     if (accountEmail) {
+
         accountEmail.textContent =
             isAdmin
                 ? "ageishi"
-                : user.email || "Googleユーザー";
+                : "ログイン不要";
     }
 
 
+    // 権限表示
     if (accountRole) {
+
         accountRole.textContent =
             isAdmin
                 ? "管理者"
-                : "一般ユーザー";
+                : "一般閲覧";
     }
 
 
+    // 開発者設定
     if (debugSettings) {
-        debugSettings.hidden = !isAdmin;
+
+        debugSettings.hidden =
+            !isAdmin;
+    }
+
+
+    // 管理者ログインボタン
+    if (showAdminLogin) {
+
+        showAdminLogin.hidden =
+            isAdmin;
+    }
+
+
+    // ログアウトボタン
+    if (logoutButton) {
+
+        logoutButton.hidden =
+            !isAdmin;
     }
 
 
     document.body.dataset.role =
-        isAdmin ? "admin" : "user";
-}
-
-function showLogin() {
-
-    loginScreen.hidden = false;
-
-    loginScreen.style.setProperty(
-        "display",
-        "flex",
-        "important"
-    );
-
-    app.hidden = true;
-    app.style.setProperty(
-        "display",
-        "none",
-        "important"
-    );
-
-    delete document.body.dataset.role;
+        isAdmin
+            ? "admin"
+            : "user";
 }
 
 
@@ -349,5 +302,4 @@ function showLogin() {
 export async function logout() {
 
     await signOut(auth);
-
 }
