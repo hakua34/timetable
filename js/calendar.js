@@ -376,8 +376,15 @@ async function renderSelectedDay() {
     const periodChanges =
         dayData?.periods || {};
 
+    // テスト日程では、設定した教科は
+    // 「変更」ではなく正式なテスト時間割として扱う
+    const isTestSchedule =
+        scheduleType === "test";
+
     const changeCount =
-        Object.keys(periodChanges).length;
+        isTestSchedule
+            ? 0
+            : Object.keys(periodChanges).length;
 
 
     // ====================================
@@ -387,8 +394,10 @@ async function renderSelectedDay() {
     let changesHTML = "";
 
 
-    Object.entries(periodChanges)
-        .forEach(([period, change]) => {
+    if (!isTestSchedule) {
+
+        Object.entries(periodChanges)
+            .forEach(([period, change]) => {
 
             const periodNumber =
                 Number(period);
@@ -466,6 +475,7 @@ async function renderSelectedDay() {
             `;
 
         });
+    }
 
 
     // ====================================
@@ -1166,13 +1176,27 @@ dayEditSave.addEventListener(
                 end
             });
 
-            // 何か変更がある時だけ保存
+            // 何か設定されている場合だけ保存
             if (
                 subject ||
                 room ||
                 note ||
                 customSubject
             ) {
+
+                // 最初に作る
+                periods[period] = {};
+
+
+                // 教科
+                if (subject) {
+
+                    periods[period].subject =
+                        subject;
+                }
+
+
+                // その他（自由入力）
                 if (
                     subject === "__custom__" &&
                     customSubject
@@ -1182,19 +1206,18 @@ dayEditSave.addEventListener(
                         customSubject;
                 }
 
-                periods[period] = {};
 
-                if (subject) {
-                    periods[period].subject =
-                        subject;
-                }
-
+                // 教室
                 if (room) {
+
                     periods[period].room =
                         room;
                 }
 
+
+                // 備考
                 if (note) {
+
                     periods[period].note =
                         note;
                 }
@@ -1275,15 +1298,18 @@ editScheduleType.addEventListener(
     "change",
     () => {
 
+        const scheduleType =
+            editScheduleType.value;
+
         const preset =
-            schedules[editScheduleType.value];
+            schedules[scheduleType];
 
         if (!preset) {
             return;
         }
 
 
-        // 名称もプリセット
+        // 日程名称
         editScheduleName.value =
             preset.name;
 
@@ -1313,18 +1339,55 @@ editScheduleType.addEventListener(
                     `.edit-end-time[data-period="${period}"]`
                 );
 
+            const subjectSelect =
+                document.querySelector(
+                    `.edit-subject[data-period="${period}"]`
+                );
 
+            const customInput =
+                document.querySelector(
+                    `.edit-custom-subject[data-period="${period}"]`
+                );
+
+
+            // プリセット時間を反映
             if (startInput) {
+
                 startInput.value =
                     time.start || "";
             }
 
+
             if (endInput) {
+
                 endInput.value =
                     time.end || "";
             }
-        }
 
+
+            // ========================================
+            // テスト日程
+            // ========================================
+
+            if (
+                scheduleType === "test" &&
+                subjectSelect
+            ) {
+
+                // 1〜6限すべて授業なし
+                subjectSelect.value =
+                    "__none__";
+
+
+                // 「その他」の入力欄もリセット
+                if (customInput) {
+
+                    customInput.value = "";
+
+                    customInput.hidden = true;
+                }
+            }
+        }
     }
 );
 
