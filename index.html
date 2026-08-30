@@ -1,504 +1,866 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<head>
+    <meta charset="UTF-8">
 
-        <title>時間割</title>
-       <!-- Chrome / Safari / Edgeなど -->
-        <link rel="icon"
-              type="image/png"
-              sizes="32x32"
-              href="./icons/favicon-32.png">
-        
-        <!-- iPhone / iPad ホーム画面 -->
-        <link rel="apple-touch-icon"
-              sizes="180x180"
-              href="./icons/apple-touch-icon.png">
-        <link rel="stylesheet" href="css/style.css">
-    </head>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-    <body>
-        <section id="login-screen" class="login-screen">
+    <title>時間割</title>
 
-            <div class="login-box">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
-                <div class="login-logo">
-                    TIME
+    <!-- favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="./icons/favicon-32.png"
+    >
+
+    <!-- iPhone / iPad ホーム画面 -->
+    <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href="./icons/apple-touch-icon.png"
+    >
+</head>
+
+
+<body>
+
+    <!-- ========================================
+        APP
+    ======================================== -->
+
+    <div id="app">
+
+
+        <!-- ==============================
+            HEADER
+        =============================== -->
+
+        <header class="header">
+
+            <div class="header-date">
+
+                <span id="header-date"></span>
+
+                <span id="header-weekday"></span>
+
+            </div>
+
+            <div
+                id="header-time"
+                class="header-time"
+            ></div>
+
+        </header>
+
+
+
+        <!-- ==============================
+            MAIN
+        =============================== -->
+
+        <main class="main">
+
+
+            <!-- ========================================
+                TODAY
+            ======================================== -->
+
+            <section
+                id="page-today"
+                class="page active"
+            >
+
+                <div class="page-heading">
+
+                    <h1>
+                        今日の時間割
+                    </h1>
+
+                    <span class="schedule-badge">
+                        通常授業
+                    </span>
+
                 </div>
 
-                <h1>学校時間割</h1>
+
+                <!-- 現在 -->
+
+                <section
+                    id="current-area"
+                    class="current-area"
+                ></section>
+
+
+                <!-- NEXT -->
+
+                <section
+                    id="next-card"
+                    class="next-card"
+                ></section>
+
+
+                <!-- 今日の変更 -->
+
+                <section
+                    id="changes-section"
+                    class="section"
+                    hidden
+                >
+
+                    <h2 class="section-title">
+
+                        <span class="warning">
+                            !
+                        </span>
+
+                        今日の変更
+
+                    </h2>
+
+                    <div id="changes-list"></div>
+
+                </section>
+
+
+                <!-- 今日の授業 -->
+
+                <section class="section">
+
+                    <h2 class="section-title normal-title">
+                        今日の授業
+                    </h2>
+
+                    <div
+                        id="class-list"
+                        class="class-list"
+                    ></div>
+
+                </section>
+
+            </section>
+
+
+
+            <!-- ========================================
+                WEEKLY
+            ======================================== -->
+
+            <section
+                id="page-weekly"
+                class="page"
+            >
+
+                <h1 class="simple-page-title">
+                    週間時間割
+                </h1>
+
+
+                <div class="weekly-wrapper">
+
+                    <table class="weekly-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th></th>
+
+                                <th data-weekday="monday">
+                                    月
+                                </th>
+
+                                <th data-weekday="tuesday">
+                                    火
+                                </th>
+
+                                <th data-weekday="wednesday">
+                                    水
+                                </th>
+
+                                <th data-weekday="thursday">
+                                    木
+                                </th>
+
+                                <th data-weekday="friday">
+                                    金
+                                </th>
+
+                                <th>
+                                    カセット
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="weekly-body"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================================
+                教科詳細オーバーレイ
+            ======================================== -->
+
+            <div
+                id="subject-overlay"
+                class="overlay"
+            >
+
+                <div
+                    class="overlay-background"
+                    data-close-overlay
+                ></div>
+
+
+                <div class="subject-sheet">
+
+                    <div class="sheet-handle"></div>
+
+
+                    <div class="subject-sheet-header">
+
+                        <div>
+
+                            <div
+                                id="subject-period"
+                                class="subject-period"
+                            ></div>
+
+                            <h2 id="subject-title"></h2>
+
+                        </div>
+
+
+                        <button
+                            id="subject-close"
+                            class="sheet-close"
+                            type="button"
+                            aria-label="閉じる"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="subject-room-row"
+                        class="subject-detail-row"
+                    >
+
+                        <span class="detail-label">
+                            教室
+                        </span>
+
+                        <span id="subject-room"></span>
+
+                    </div>
+
+
+                    <div
+                        id="subject-note-row"
+                        class="subject-detail-row"
+                    >
+
+                        <span class="detail-label">
+                            備考
+                        </span>
+
+                        <span id="subject-note"></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================================
+                CALENDAR
+            ======================================== -->
+
+            <section
+                id="page-calendar"
+                class="page"
+            >
+
+                <h1 class="simple-page-title">
+                    予定
+                </h1>
+
+
+                <!-- 月切り替え -->
+
+                <div class="calendar-header">
+
+                    <button
+                        id="calendar-prev"
+                        class="calendar-arrow"
+                        type="button"
+                    >
+                        ‹
+                    </button>
+
+
+                    <h2
+                        id="calendar-month"
+                        class="calendar-month"
+                    ></h2>
+
+
+                    <button
+                        id="calendar-next"
+                        class="calendar-arrow"
+                        type="button"
+                    >
+                        ›
+                    </button>
+
+                </div>
+
+
+
+                <!-- カレンダー -->
+
+                <div class="calendar-card">
+
+
+                    <div class="calendar-weekdays">
+
+                        <span>月</span>
+
+                        <span>火</span>
+
+                        <span>水</span>
+
+                        <span>木</span>
+
+                        <span>金</span>
+
+                        <span class="saturday">
+                            土
+                        </span>
+
+                        <span class="sunday">
+                            日
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="calendar-grid"
+                        class="calendar-grid"
+                    ></div>
+
+                </div>
+
+
+
+                <!-- 選択日の情報 -->
+
+                <section
+                    id="selected-day-card"
+                    class="selected-day-card"
+                >
+
+                    <div class="selected-day-header">
+
+                        <div>
+
+                            <div
+                                id="selected-date"
+                                class="selected-date"
+                            ></div>
+
+                            <div
+                                id="selected-weekday"
+                                class="selected-weekday"
+                            ></div>
+
+                        </div>
+
+
+                        <!-- 管理者だけ表示 -->
+
+                        <button
+                            id="day-edit-button"
+                            class="day-edit-button"
+                            type="button"
+                            hidden
+                        >
+                            編集
+                        </button>
+
+                    </div>
+
+
+                    <div id="day-info"></div>
+
+                </section>
+
+            </section>
+
+
+
+            <!-- ========================================
+                SETTINGS
+            ======================================== -->
+
+            <section
+                id="page-settings"
+                class="page"
+            >
+
+                <h1 class="simple-page-title">
+                    設定
+                </h1>
+
+
+                <!-- アカウント -->
+
+                <section class="settings-section">
+
+                    <h2>
+                        アカウント
+                    </h2>
+
+
+                    <div class="account-card">
+
+
+                        <div class="account-row">
+
+                            <span>
+                                状態
+                            </span>
+
+                            <strong id="account-email">
+                                ログイン不要
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-row">
+
+                            <span>
+                                権限
+                            </span>
+
+                            <strong id="account-role">
+                                一般閲覧
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- 一般閲覧時 -->
+
+                    <button
+                        id="show-admin-login"
+                        class="admin-login-link"
+                        type="button"
+                    >
+                        管理者ログイン
+                    </button>
+
+
+
+                    <!-- 管理者ログイン中のみ表示 -->
+
+                    <button
+                        id="logout-button"
+                        class="logout-button"
+                        type="button"
+                        hidden
+                    >
+                        管理者からログアウト
+                    </button>
+
+                </section>
+
+
+
+                <!-- 管理者だけ表示 -->
+
+                <section
+                    id="debug-settings"
+                    class="settings-section debug-section"
+                    hidden
+                >
+
+                    <h2>
+                        開発者向け
+                    </h2>
+
+
+                    <button
+                        id="clear-cache-reload"
+                        class="settings-danger-button"
+                        type="button"
+                    >
+                        キャッシュ削除＆再読み込み
+                    </button>
+
+                </section>
+
+            </section>
+
+        </main>
+
+
+
+        <!-- ==============================
+            BOTTOM NAV
+        =============================== -->
+
+        <nav class="bottom-nav">
+
+
+            <button
+                class="nav-item active"
+                data-page="today"
+            >
+
+                <span class="nav-icon">
+                    ●
+                </span>
+
+                <span>
+                    今日
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="weekly"
+            >
+
+                <span class="nav-icon">
+                    ▦
+                </span>
+
+                <span>
+                    週間
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="calendar"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    予定
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="settings"
+            >
+
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                <span>
+                    設定
+                </span>
+
+            </button>
+
+        </nav>
+
+    </div>
+
+
+
+    <!-- ========================================
+        管理者ログインオーバーレイ
+    ======================================== -->
+
+    <div
+        id="admin-login-overlay"
+        class="overlay"
+    >
+
+
+        <div
+            class="overlay-background"
+            id="admin-login-background"
+        ></div>
+
+
+        <div class="admin-login-sheet">
+
+
+            <h2>
+                管理者ログイン
+            </h2>
+
+
+            <label>
+
+                ID
+
+                <input
+                    id="admin-id"
+                    type="text"
+                    autocomplete="username"
+                >
+
+            </label>
+
+
+            <label>
+
+                パスワード
+
+                <input
+                    id="admin-password"
+                    type="password"
+                    autocomplete="current-password"
+                >
+
+            </label>
+
+
+            <div
+                id="admin-login-error"
+                class="login-error"
+            ></div>
+
+
+            <button
+                id="admin-login-button"
+                class="admin-submit"
+                type="button"
+            >
+                ログイン
+            </button>
+
+
+            <button
+                id="admin-login-cancel"
+                class="admin-cancel"
+                type="button"
+            >
+                キャンセル
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================
+        日別設定オーバーレイ
+    ======================================== -->
+
+    <div
+        id="day-edit-overlay"
+        class="overlay"
+    >
+
+
+        <div
+            id="day-edit-background"
+            class="overlay-background"
+        ></div>
+
+
+        <div class="day-edit-sheet">
+
+
+            <div class="day-edit-header">
+
+
+                <div>
+
+                    <div class="day-edit-label">
+                        日別設定
+                    </div>
+
+                    <h2 id="day-edit-title">
+                        8月27日
+                    </h2>
+
+                </div>
+
 
                 <button
-                    id="google-login"
-                    class="google-login-button"
+                    id="day-edit-close"
+                    class="day-edit-close"
                     type="button"
                 >
-                    Googleでログイン
-                </button>
-
-                <p class="login-help">
-                    学校のGoogleアカウントを使用してください
-                </p>
-
-                <button
-                    id="show-admin-login"
-                    class="admin-login-link"
-                    type="button"
-                >
-                    管理者の方はこちら
+                    ×
                 </button>
 
             </div>
 
-        </section>
-        <div id="app" hidden>
-            <!-- ==============================
-                HEADER
-            =============================== -->
-            <header class="header">
-                <div class="header-date">
-                    <span id="header-date"></span>
-                    <span id="header-weekday"></span>
-                </div>
-                <div id="header-time" class="header-time"></div>
-            </header>
-            <!-- ==============================
-                MAIN
-            =============================== -->
-            <main class="main">
-                <!-- TODAY -->
-                <section id="page-today" class="page active">
-                    <div class="page-heading">
-                        <h1>今日の時間割</h1>
-                        <span class="schedule-badge">通常授業</span>
-                    </div>
-                    <!-- 現在 -->
-                    <section id="current-area" class="current-area"></section>
-                    <!-- NEXT -->
-                    <section id="next-card" class="next-card"></section>
-
-                    <!-- 今日の変更 -->
-                    <section id="changes-section" class="section" hidden>
-                        <h2 class="section-title">
-                            <span class="warning">!</span>
-                            今日の変更
-                        </h2>
-
-                        <div id="changes-list"></div>
-                    </section>
-
-                    <!-- 今日の授業 -->
-                    <section class="section">
-                        <h2 class="section-title normal-title">
-                            今日の授業
-                        </h2>
-
-                        <div id="class-list" class="class-list"></div>
-                    </section>
-
-                </section>
 
 
-                <section id="page-weekly" class="page">
-
-                    <h1 class="simple-page-title">週間時間割</h1>
-
-                    <div class="weekly-wrapper">
-                        <table class="weekly-table">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th data-weekday="monday">月</th>
-                                    <th data-weekday="tuesday">火</th>
-                                    <th data-weekday="wednesday">水</th>
-                                    <th data-weekday="thursday">木</th>
-                                    <th data-weekday="friday">金</th>
-                                    <th>カセット</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="weekly-body"></tbody>
-                        </table>
-                    </div>
-
-                </section>
+            <div class="day-edit-scroll">
 
 
-                <!-- 教科詳細オーバーレイ -->
-                <div id="subject-overlay" class="overlay">
+                <!-- 時間割 -->
 
-                    <div class="overlay-background" data-close-overlay></div>
+                <div class="edit-field">
 
-                    <div class="subject-sheet">
+                    <label for="edit-timetable-type">
+                        時間割
+                    </label>
 
-                        <div class="sheet-handle"></div>
 
-                        <div class="subject-sheet-header">
-                            <div>
-                                <div id="subject-period" class="subject-period"></div>
-                                <h2 id="subject-title"></h2>
-                            </div>
+                    <select id="edit-timetable-type">
 
-                            <button
-                                id="subject-close"
-                                class="sheet-close"
-                                type="button"
-                                aria-label="閉じる"
-                            >
-                                ×
-                            </button>
-                        </div>
+                        <option value="normal">
+                            通常時間割
+                        </option>
 
-                        <div id="subject-room-row" class="subject-detail-row">
-                            <span class="detail-label">教室</span>
-                            <span id="subject-room"></span>
-                        </div>
+                        <option value="cassette">
+                            カセット日程
+                        </option>
 
-                        <div id="subject-note-row" class="subject-detail-row">
-                            <span class="detail-label">備考</span>
-                            <span id="subject-note"></span>
-                        </div>
-
-                    </div>
+                    </select>
 
                 </div>
 
 
-                <!-- CALENDAR -->
-                <section id="page-calendar" class="page">
 
-                    <h1 class="simple-page-title">予定</h1>
+                <!-- 授業時間 -->
 
-                    <!-- 月切り替え -->
-                    <div class="calendar-header">
-                        <button id="calendar-prev" class="calendar-arrow" type="button">‹</button>
+                <div class="edit-field">
 
-                        <h2 id="calendar-month" class="calendar-month"></h2>
+                    <label for="edit-schedule-type">
+                        授業時間
+                    </label>
 
-                        <button id="calendar-next" class="calendar-arrow" type="button">›</button>
-                    </div>
+                    <select id="edit-schedule-type">
+                    </select>
 
-                    <!-- カレンダー -->
-                    <div class="calendar-card">
-
-                        <div class="calendar-weekdays">
-                            <span>月</span>
-                            <span>火</span>
-                            <span>水</span>
-                            <span>木</span>
-                            <span>金</span>
-                            <span class="saturday">土</span>
-                            <span class="sunday">日</span>
-                        </div>
-
-                        <div id="calendar-grid" class="calendar-grid"></div>
-
-                    </div>
+                </div>
 
 
-                    <!-- 選択日の情報 -->
-                    <section id="selected-day-card" class="selected-day-card">
 
-                        <div class="selected-day-header">
-                            <div>
-                                <div id="selected-date" class="selected-date"></div>
-                                <div id="selected-weekday" class="selected-weekday"></div>
-                            </div>
+                <div class="edit-field">
 
-                            <!-- 後で管理者だけ表示 -->
-                            <button id="day-edit-button"
-                                    class="day-edit-button"
-                                    type="button"
-                                    hidden>
-                                編集
-                            </button>
-                        </div>
+                    <label for="edit-schedule-name">
+                        日程名称
+                    </label>
 
-
-                        <div id="day-info"></div>
-
-                    </section>
-
-                </section>
-
-
-                <!-- SETTINGS -->
-                <section id="page-settings" class="page">
-
-                    <h1 class="simple-page-title">設定</h1>
-
-                    <section class="settings-section">
-
-                        <h2>アカウント</h2>
-
-                        <div class="account-card">
-
-                            <div class="account-row">
-                                <span>ログイン中</span>
-                                <strong id="account-email">---</strong>
-                            </div>
-
-                            <div class="account-row">
-                                <span>権限</span>
-                                <strong id="account-role">---</strong>
-                            </div>
-
-                        </div>
-
-                        <button
-                            id="logout-button"
-                            class="logout-button"
-                            type="button"
-                        >
-                            ログアウト
-                        </button>
-
-                    </section>
-
-
-                    <!-- 管理者だけ表示 -->
-                    <section
-                        id="debug-settings"
-                        class="settings-section debug-section"
-                        hidden
-                    >
-
-                        <h2>開発者向け</h2>
-
-                        <button
-                            id="clear-cache-reload"
-                            class="settings-danger-button"
-                            type="button"
-                        >
-                            キャッシュ削除＆再読み込み
-                        </button>
-
-                    </section>
-
-                </section>
-
-            </main>
-
-
-            <!-- ==============================
-                BOTTOM NAV
-            =============================== -->
-            <nav class="bottom-nav">
-
-                <button class="nav-item active" data-page="today">
-                    <span class="nav-icon">●</span>
-                    <span>今日</span>
-                </button>
-
-                <button class="nav-item" data-page="weekly">
-                    <span class="nav-icon">▦</span>
-                    <span>週間</span>
-                </button>
-
-                <button class="nav-item" data-page="calendar">
-                    <span class="nav-icon">□</span>
-                    <span>予定</span>
-                </button>
-
-                <button class="nav-item" data-page="settings">
-                    <span class="nav-icon">⚙</span>
-                    <span>設定</span>
-                </button>
-
-            </nav>
-
-        </div>
-
-        <script type="module" src="js/app.js"></script>
-
-        <div id="admin-login-overlay" class="overlay">
-
-            <div
-                class="overlay-background"
-                id="admin-login-background"
-            ></div>
-
-            <div class="admin-login-sheet">
-
-                <h2>管理者ログイン</h2>
-
-                <label>
-                    ID
                     <input
-                        id="admin-id"
+                        id="edit-schedule-name"
                         type="text"
-                        autocomplete="username"
+                        placeholder="通常授業"
                     >
-                </label>
 
-                <label>
-                    パスワード
-                    <input
-                        id="admin-password"
-                        type="password"
-                        autocomplete="current-password"
-                    >
-                </label>
+                </div>
 
-                <div
-                    id="admin-login-error"
-                    class="login-error"
-                ></div>
+
+
+                <!-- 各授業 -->
+
+                <div class="edit-section-title">
+                    授業変更
+                </div>
+
+
+                <div id="edit-periods"></div>
+
+
+
+                <!-- 備考 -->
+
+                <div class="edit-field">
+
+                    <label for="edit-day-note">
+                        この日の備考
+                    </label>
+
+
+                    <textarea
+                        id="edit-day-note"
+                        rows="3"
+                        placeholder="行事・連絡事項など"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="day-edit-actions">
+
 
                 <button
-                    id="admin-login-button"
-                    class="admin-submit"
-                    type="button"
-                >
-                    ログイン
-                </button>
-
-                <button
-                    id="admin-login-cancel"
-                    class="admin-cancel"
+                    id="day-edit-cancel"
+                    class="edit-cancel-button"
                     type="button"
                 >
                     キャンセル
                 </button>
 
-            </div>
 
-        </div>
-        <div id="day-edit-overlay" class="overlay">
-
-            <div
-                id="day-edit-background"
-                class="overlay-background"
-            ></div>
-
-            <div class="day-edit-sheet">
-
-                <div class="day-edit-header">
-
-                    <div>
-                        <div class="day-edit-label">
-                            日別設定
-                        </div>
-
-                        <h2 id="day-edit-title">
-                            8月27日
-                        </h2>
-                    </div>
-
-                    <button
-                        id="day-edit-close"
-                        class="day-edit-close"
-                        type="button"
-                    >
-                        ×
-                    </button>
-
-                </div>
-
-
-                <div class="day-edit-scroll">
-
-                    <!-- 時間割 -->
-
-                    <div class="edit-field">
-
-                        <label for="edit-timetable-type">
-                            時間割
-                        </label>
-
-                        <select id="edit-timetable-type">
-
-                            <option value="normal">
-                                通常時間割
-                            </option>
-
-                            <option value="cassette">
-                                カセット日程
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- 授業時間 -->
-
-                    <div class="edit-field">
-
-                        <label for="edit-schedule-type">
-                            授業時間
-                        </label>
-
-                        <select id="edit-schedule-type">
-                        </select>
-
-                    </div>
-                    <div class="edit-field">
-
-                        <label for="edit-schedule-name">
-                            日程名称
-                        </label>
-
-                        <input
-                            id="edit-schedule-name"
-                            type="text"
-                            placeholder="通常授業"
-                        >
-
-                    </div>
-
-                    <!-- 各授業 -->
-
-                    <div class="edit-section-title">
-                        授業変更
-                    </div>
-
-                    <div id="edit-periods"></div>
-
-
-                    <!-- 備考 -->
-
-                    <div class="edit-field">
-
-                        <label for="edit-day-note">
-                            この日の備考
-                        </label>
-
-                        <textarea
-                            id="edit-day-note"
-                            rows="3"
-                            placeholder="行事・連絡事項など"
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-
-                <div class="day-edit-actions">
-
-                    <button
-                        id="day-edit-cancel"
-                        class="edit-cancel-button"
-                        type="button"
-                    >
-                        キャンセル
-                    </button>
-
-                    <button
-                        id="day-edit-save"
-                        class="edit-save-button"
-                        type="button"
-                    >
-                        保存
-                    </button>
-
-                </div>
+                <button
+                    id="day-edit-save"
+                    class="edit-save-button"
+                    type="button"
+                >
+                    保存
+                </button>
 
             </div>
 
         </div>
-    </body>
+
+    </div>
+
+
+
+    <!-- ========================================
+        JavaScript
+    ======================================== -->
+
+    <script
+        type="module"
+        src="js/app.js"
+    ></script>
+
+</body>
 </html>
