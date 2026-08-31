@@ -489,130 +489,98 @@ function renderClassList(
     classList.innerHTML = "";
 
 
-    todayTimetable.forEach(
-        (subjectId, index) => {
+todayTimetable.forEach(
+    (subjectId, index) => {
 
-            // 授業なし
-            if (!subjectId) {
-                return;
-            }
-
-
-            const subject =
-                subjects[subjectId];
-
-            const period =
-                schedule.periods[index];
+        // 授業なし
+        if (!subjectId) {
+            return;
+        }
 
 
-            let stateClass = "";
+        const subject =
+            subjects[subjectId];
+
+        const period =
+            schedule.periods[index];
 
 
-            // 現在授業
-            if (
-                status.type === "class" &&
-                status.currentIndex === index
-            ) {
-
-                stateClass = "current";
-
-            }
+        let stateClass = "";
 
 
-            // 終了済み判定
-            const now =
-                getCurrentMinutes(
-                    new Date()
-                );
+        // 現在授業
+        if (
+            status.type === "class" &&
+            status.currentIndex === index
+        ) {
 
-            const end =
-                timeToMinutes(
-                    period.end
-                );
-
-            if (
-                now >= end &&
-                !(
-                    status.type === "class" &&
-                    status.currentIndex === index
-                )
-            ) {
-
-                stateClass =
-                    "finished";
-
-            }
-
-
-            const change =
-                changes?.[index + 1] || {};
-
-            let detailsHTML = "";
-
-
-            if (change.room) {
-
-                detailsHTML += `
-                    <div class="class-detail">
-                        教室：${change.room}
-                    </div>
-                `;
-            }
-
-
-            if (change.note) {
-
-                detailsHTML += `
-                    <div class="class-detail">
-                        ${change.note}
-                    </div>
-                `;
-            }
-
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-            row.className =
-                `class-row ${stateClass}`;
-
-            row.innerHTML = `
-
-                <span class="class-period">
-                    ${index + 1}限
-                </span>
-
-                <div class="class-main">
-
-                    <span class="class-name">
-                        ${subject.name}
-                    </span>
-
-                    ${
-                        detailsHTML
-                            ? `
-                                <div class="class-details">
-                                    ${detailsHTML}
-                                </div>
-                            `
-                            : ""
-                    }
-
-                </div>
-
-                <span class="class-time">
-                    ${period.start} - ${period.end}
-                </span>
-
-            `;
-
-
-            classList.appendChild(row);
+            stateClass = "current";
 
         }
-    );
+
+
+        // 終了済み判定
+        const now =
+            getCurrentMinutes(
+                new Date()
+            );
+
+        const end =
+            timeToMinutes(
+                period.end
+            );
+
+        if (
+            now >= end &&
+            !(
+                status.type === "class" &&
+                status.currentIndex === index
+            )
+        ) {
+
+            stateClass =
+                "finished";
+
+        }
+
+
+        // この時限に変更があるか
+        const change =
+            changes?.[index + 1];
+
+        const isChanged =
+            !!change;
+
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+        row.className =
+            `class-row ${stateClass}`;
+
+        row.innerHTML = `
+
+            <span class="class-period">
+                ${index + 1}限
+            </span>
+
+            <span class="class-name ${isChanged ? "changed-subject" : ""}">
+                ${subject.name}
+            </span>
+
+            <span class="class-time">
+                ${period.start} - ${period.end}
+            </span>
+
+        `;
+
+
+        classList.appendChild(row);
+
+    }
+);
 
 }
 
@@ -956,11 +924,17 @@ export async function updateToday() {
         schedule
     );
 
+    const displayChanges =
+        scheduleType === "test"
+            ? {}
+            : changes;
+
+
     renderClassList(
         status,
         todayTimetable,
         schedule,
-        changes
+        displayChanges
     );
 
 
