@@ -1665,3 +1665,7 @@ button {
 
     cursor: pointer;
 }
+
+.changed-subject {
+    color: #df8a8a;
+}
