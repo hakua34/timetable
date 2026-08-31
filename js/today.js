@@ -482,7 +482,8 @@ function renderNext(
 function renderClassList(
     status,
     todayTimetable,
-    schedule
+    schedule,
+    changes
 ) {
 
     classList.innerHTML = "";
@@ -543,6 +544,32 @@ function renderClassList(
             }
 
 
+            const change =
+                changes?.[index + 1] || {};
+
+            let detailsHTML = "";
+
+
+            if (change.room) {
+
+                detailsHTML += `
+                    <div class="class-detail">
+                        教室：${change.room}
+                    </div>
+                `;
+            }
+
+
+            if (change.note) {
+
+                detailsHTML += `
+                    <div class="class-detail">
+                        ${change.note}
+                    </div>
+                `;
+            }
+
+
             const row =
                 document.createElement(
                     "div"
@@ -551,16 +578,29 @@ function renderClassList(
             row.className =
                 `class-row ${stateClass}`;
 
-
             row.innerHTML = `
 
                 <span class="class-period">
                     ${index + 1}限
                 </span>
 
-                <span class="class-name">
-                    ${subject.name}
-                </span>
+                <div class="class-main">
+
+                    <span class="class-name">
+                        ${subject.name}
+                    </span>
+
+                    ${
+                        detailsHTML
+                            ? `
+                                <div class="class-details">
+                                    ${detailsHTML}
+                                </div>
+                            `
+                            : ""
+                    }
+
+                </div>
 
                 <span class="class-time">
                     ${period.start} - ${period.end}
@@ -822,6 +862,49 @@ export async function updateToday() {
             const index =
                 Number(period) - 1;
 
+
+            // ========================================
+            // 授業なし
+            // ========================================
+
+            if (
+                change.subject === "__none__"
+            ) {
+
+                todayTimetable[index] = null;
+
+                return;
+            }
+
+
+            // ========================================
+            // その他
+            // ========================================
+
+            if (
+                change.subject === "__custom__"
+            ) {
+
+                const customId =
+                    `__custom_${index}`;
+
+                subjects[customId] = {
+                    name:
+                        change.customSubject ||
+                        "その他"
+                };
+
+                todayTimetable[index] =
+                    customId;
+
+                return;
+            }
+
+
+            // ========================================
+            // 通常の教科変更
+            // ========================================
+
             if (change.subject) {
 
                 todayTimetable[index] =
@@ -876,7 +959,8 @@ export async function updateToday() {
     renderClassList(
         status,
         todayTimetable,
-        schedule
+        schedule,
+        changes
     );
 
 
@@ -894,10 +978,30 @@ export async function updateToday() {
     // 今日の変更欄
     // ========================================
 
-    renderTodayChanges(
-        todayTimetable,
-        changes
-    );
+    if (
+        scheduleType === "test"
+    ) {
+
+        const section =
+            document.getElementById(
+                "changes-section"
+            );
+
+        const list =
+            document.getElementById(
+                "changes-list"
+            );
+
+        section.hidden = true;
+        list.innerHTML = "";
+
+    } else {
+
+        renderTodayChanges(
+            todayTimetable,
+            changes
+        );
+    }
 }
 
 
