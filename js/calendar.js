@@ -954,8 +954,11 @@ function renderEditPeriods(
     editPeriods.innerHTML = "";
 
 
-    let baseClasses;
+    // ========================================
+    // 基準になる時間割
+    // ========================================
 
+    let baseClasses;
 
     if (
         editTimetableType.value === "cassette"
@@ -973,10 +976,31 @@ function renderEditPeriods(
     }
 
 
-    for (let i = 0; i < 6; i++) {
+    // ========================================
+    // 授業時間
+    // ========================================
+
+    const preset =
+        schedules[editScheduleType.value] ||
+        schedules.normal;
+
+    const savedSchedule =
+        dayData?.schedule;
+
+
+    // ========================================
+    // 1〜6限
+    // ========================================
+
+    for (
+        let i = 0;
+        i < 6;
+        i++
+    ) {
 
         const periodNumber =
             i + 1;
+
 
         const originalSubjectId =
             baseClasses[i];
@@ -984,19 +1008,36 @@ function renderEditPeriods(
         const originalSubject =
             subjects[originalSubjectId];
 
+
         const existingChange =
             dayData?.periods?.[periodNumber] || {};
 
 
-        const row =
-            document.createElement("div");
+        // ====================================
+        // 時間
+        // ====================================
 
-        row.className = "edit-period-row";
+        const savedTime =
+            savedSchedule?.periods?.[i];
+
+        const presetTime =
+            preset.periods?.[i];
 
 
-        // ----------------------------
+        const start =
+            savedTime?.start ??
+            presetTime?.start ??
+            "";
+
+        const end =
+            savedTime?.end ??
+            presetTime?.end ??
+            "";
+
+
+        // ====================================
         // 教科選択肢
-        // ----------------------------
+        // ====================================
 
         let subjectOptions = `
             <option value="">
@@ -1004,6 +1045,8 @@ function renderEditPeriods(
             </option>
         `;
 
+
+        // 通常教科
         Object.entries(subjects)
             .forEach(([id, subject]) => {
 
@@ -1023,6 +1066,47 @@ function renderEditPeriods(
             });
 
 
+        // その他
+        subjectOptions += `
+            <option
+                value="__custom__"
+                ${
+                    existingChange.subject === "__custom__"
+                        ? "selected"
+                        : ""
+                }
+            >
+                その他
+            </option>
+        `;
+
+
+        // 授業なし
+        subjectOptions += `
+            <option
+                value="__none__"
+                ${
+                    existingChange.subject === "__none__"
+                        ? "selected"
+                        : ""
+                }
+            >
+                授業なし
+            </option>
+        `;
+
+
+        // ====================================
+        // 行作成
+        // ====================================
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "edit-period-row";
+
+
         row.innerHTML = `
 
             <div class="edit-period-heading">
@@ -1032,7 +1116,10 @@ function renderEditPeriods(
                 </strong>
 
                 <span>
-                    ${originalSubject?.name || "授業なし"}
+                    ${
+                        originalSubject?.name ||
+                        "授業なし"
+                    }
                 </span>
 
             </div>
@@ -1046,6 +1133,22 @@ function renderEditPeriods(
                 >
                     ${subjectOptions}
                 </select>
+
+
+                <input
+                    class="edit-custom-subject"
+                    data-period="${periodNumber}"
+                    type="text"
+                    placeholder="科目名を入力"
+                    value="${
+                        existingChange.customSubject || ""
+                    }"
+                    ${
+                        existingChange.subject === "__custom__"
+                            ? ""
+                            : "hidden"
+                    }
+                >
 
 
                 <input
@@ -1065,14 +1168,77 @@ function renderEditPeriods(
                     value="${existingChange.note || ""}"
                 >
 
+
+                <div class="edit-time-row">
+
+                    <span class="edit-time-label">
+                        時間
+                    </span>
+
+                    <input
+                        class="edit-start-time"
+                        data-period="${periodNumber}"
+                        type="time"
+                        value="${start}"
+                    >
+
+                    <span>～</span>
+
+                    <input
+                        class="edit-end-time"
+                        data-period="${periodNumber}"
+                        type="time"
+                        value="${end}"
+                    >
+
+                </div>
+
             </div>
         `;
 
 
         editPeriods.appendChild(row);
     }
-}
 
+
+    // ========================================
+    // 「その他」選択時
+    // ========================================
+
+    editPeriods
+        .querySelectorAll(".edit-subject")
+        .forEach(select => {
+
+            select.addEventListener(
+                "change",
+                () => {
+
+                    const period =
+                        select.dataset.period;
+
+                    const customInput =
+                        editPeriods.querySelector(
+                            `.edit-custom-subject[data-period="${period}"]`
+                        );
+
+
+                    if (customInput) {
+
+                        customInput.hidden =
+                            select.value !== "__custom__";
+
+                        if (
+                            select.value !== "__custom__"
+                        ) {
+
+                            customInput.value = "";
+                        }
+                    }
+                }
+            );
+
+        });
+}
 
 // ========================================
 // 時間割パターン変更
