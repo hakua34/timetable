@@ -583,28 +583,7 @@ todayTimetable.forEach(
         // 変更内容の追加行
         // ========================================
         
-        const detailTexts = [];
-        
-        
-        if (change?.room) {
-        
-            detailTexts.push(
-                `教室：${change.room}`
-            );
-        
-        }
-        
-        
-        if (change?.note) {
-        
-            detailTexts.push(
-                change.note
-            );
-        
-        }
-        
-        
-        if (detailTexts.length) {
+        if (change?.room || change?.note) {
         
             const detailRow =
                 document.createElement(
@@ -612,10 +591,31 @@ todayTimetable.forEach(
                 );
         
             detailRow.className =
-                "class-change-detail";
+                `class-change-detail ${stateClass}`;
         
-            detailRow.textContent =
-                detailTexts.join("、");
+            detailRow.innerHTML = `
+        
+                ${
+                    change?.room
+                        ? `
+                            <div class="class-change-room">
+                                教室：${change.room}
+                            </div>
+                        `
+                        : ""
+                }
+        
+                ${
+                    change?.note
+                        ? `
+                            <div class="class-change-note">
+                                ${change.note}
+                            </div>
+                        `
+                        : ""
+                }
+        
+            `;
         
             classList.appendChild(
                 detailRow
