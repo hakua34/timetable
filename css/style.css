@@ -1666,7 +1666,7 @@ button {
     cursor: pointer;
 }
 
-
+/*
 .changed-period {
     color: #d97878;
 }
@@ -1682,13 +1682,10 @@ button {
     color: #d97878;
 }
 
-/* 変更内容がある授業は、
-   通常行の下罫線を消して詳細行とつなげる */
 .class-row:has(+ .class-change-detail) {
     border-bottom: none;
 }
 
-/* 変更内容の追加行 */
 .class-change-detail {
     padding: 0 24px 14px 110px;
     font-size: 0.82rem;
@@ -1698,12 +1695,10 @@ button {
     border-bottom: 1px solid #e5e5e5;
 }
 
-/* 現在授業なら詳細行までハイライトを伸ばす */
 .class-change-detail.current {
     background: #f2f5ff;
 }
 
-/* 終了済みなら詳細行も同じ雰囲気にする */
 .class-change-detail.finished {
     opacity: 0.6;
 }
@@ -1719,4 +1714,60 @@ button {
 
 .class-change-detail {
     border-bottom: 1px solid #e5e5e5;
+}
+
+*/
+
+/*----------------------------------*/
+/* 変更がある時限番号 */
+.changed-period {
+    color: #d97878;
+}
+
+
+/* 詳細行が続く授業は、授業行側の下罫線を消す */
+.class-row:has(+ .class-change-detail) {
+    border-bottom: none;
+}
+
+
+/* 教室・備考の詳細行 */
+.class-change-detail {
+    margin: 0;
+    padding: 0 24px 14px 135px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #777;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* 教室と備考を別々の行にする */
+.class-change-room,
+.class-change-note {
+    display: block;
+}
+
+
+/* 現在授業なら詳細部分まで青い背景を続ける */
+.class-change-detail.current {
+    background: #f2f5ff;
+}
+
+
+/* 現在授業の青い左線も詳細行まで続ける */
+.class-change-detail.current {
+    border-left: 5px solid #5d82d8;
+    padding-left: 130px;
+}
+
+
+/* 終了済み */
+.class-change-detail.finished {
+    opacity: 0.6;
 }
