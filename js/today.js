@@ -550,34 +550,78 @@ todayTimetable.forEach(
 
         const isChanged =
             !!change;
-
-
+        
+        
         const row =
             document.createElement(
                 "div"
             );
-
+        
         row.className =
             `class-row ${stateClass}`;
-
+        
         row.innerHTML = `
-
-            <span class="class-period">
+        
+            <span class="class-period ${isChanged ? "changed-period" : ""}">
                 ${index + 1}限
             </span>
-
-            <span class="class-name ${isChanged ? "changed-subject" : ""}">
+        
+            <span class="class-name">
                 ${subject.name}
             </span>
-
+        
             <span class="class-time">
                 ${period.start} - ${period.end}
             </span>
-
+        
         `;
-
-
+        
         classList.appendChild(row);
+        
+        
+        // ========================================
+        // 変更内容の追加行
+        // ========================================
+        
+        const detailTexts = [];
+        
+        
+        if (change?.room) {
+        
+            detailTexts.push(
+                `教室：${change.room}`
+            );
+        
+        }
+        
+        
+        if (change?.note) {
+        
+            detailTexts.push(
+                change.note
+            );
+        
+        }
+        
+        
+        if (detailTexts.length) {
+        
+            const detailRow =
+                document.createElement(
+                    "div"
+                );
+        
+            detailRow.className =
+                "class-change-detail";
+        
+            detailRow.textContent =
+                detailTexts.join("、");
+        
+            classList.appendChild(
+                detailRow
+            );
+        
+        }
 
     }
 );
