@@ -996,29 +996,22 @@ export async function updateToday() {
     // 今日の変更欄
     // ========================================
 
-    if (
-        scheduleType === "test"
-    ) {
-
-        const section =
-            document.getElementById(
-                "changes-section"
-            );
-
-        const list =
-            document.getElementById(
-                "changes-list"
-            );
-
-        section.hidden = true;
-        list.innerHTML = "";
-
-    } else {
-
-        renderTodayChanges(
-            todayTimetable,
-            changes
+    const section =
+        document.getElementById(
+            "changes-section"
         );
+    
+    const list =
+        document.getElementById(
+            "changes-list"
+        );
+    
+    if (section) {
+        section.hidden = true;
+    }
+    
+    if (list) {
+        list.innerHTML = "";
     }
 }
 
@@ -1030,6 +1023,6 @@ updateToday();
 // 30秒ごとに更新
 setInterval(
     updateToday,
-    30000
+    10000
 );
 
