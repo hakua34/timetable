@@ -1666,6 +1666,14 @@ button {
     cursor: pointer;
 }
 
-.changed-subject {
-    color: #df8a8a;
+
+.changed-period {
+    color: #d97878;
+}
+
+.class-change-detail {
+    margin-left: 48px;
+    padding: 3px 0 8px;
+    font-size: 0.82rem;
+    color: #777;
 }
