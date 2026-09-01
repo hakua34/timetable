@@ -1677,3 +1677,38 @@ button {
     font-size: 0.82rem;
     color: #777;
 }
+
+.changed-period {
+    color: #d97878;
+}
+
+/* 変更内容がある授業は、
+   通常行の下罫線を消して詳細行とつなげる */
+.class-row:has(+ .class-change-detail) {
+    border-bottom: none;
+}
+
+/* 変更内容の追加行 */
+.class-change-detail {
+    padding: 0 24px 14px 110px;
+    font-size: 0.82rem;
+    color: #777;
+    line-height: 1.6;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* 現在授業なら詳細行までハイライトを伸ばす */
+.class-change-detail.current {
+    background: #f2f5ff;
+}
+
+/* 終了済みなら詳細行も同じ雰囲気にする */
+.class-change-detail.finished {
+    opacity: 0.6;
+}
+
+.class-change-room,
+.class-change-note {
+    display: block;
+}
