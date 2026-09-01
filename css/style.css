@@ -1712,3 +1712,11 @@ button {
 .class-change-note {
     display: block;
 }
+
+.class-row:has(+ .class-change-detail) {
+    border-bottom: none;
+}
+
+.class-change-detail {
+    border-bottom: 1px solid #e5e5e5;
+}
