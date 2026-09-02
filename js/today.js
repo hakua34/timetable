@@ -600,7 +600,7 @@ function renderClassList(
 
                 <div class="class-main-row">
 
-                    <span class="class-period ${useRedPeriod ? "changed-period" : ""}">
+                    <span class="class-period">
     						${index + 1}限
 					</span>
 
