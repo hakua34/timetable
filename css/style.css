@@ -1666,7 +1666,8 @@ button {
 }
 
 .settings-section {
-    margin-bottom: 70px;
+    height:200px;
+    margin-bottom: 30px;
 }
 
 .settings-section h2 {
