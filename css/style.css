@@ -386,12 +386,52 @@ button {
 .class-row {
     min-height: 57px;
 
+    display: block;
+
+    padding: 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.class-main-row {
+    min-height: 57px;
+
     display: flex;
     align-items: center;
 
     padding: 0 14px;
+}
 
-    border-bottom: 1px solid #eeeeee;
+
+/* 変更がある時限番号 */
+
+.changed-period {
+    color: #d97878;
+}
+
+
+/* 教室・備考 */
+
+.class-change-detail {
+    padding:
+        0
+        14px
+        12px
+        59px;
+
+    font-size: 13px;
+    line-height: 1.55;
+
+    color: #777;
+}
+
+.class-change-room,
+.class-change-note {
+    display: block;
+}
+
+.class-change-note {
+    margin-top: 2px;
 }
 
 .class-row:last-child {
@@ -1666,59 +1706,6 @@ button {
     cursor: pointer;
 }
 
-/*
-.changed-period {
-    color: #d97878;
-}
-
-.class-change-detail {
-    margin-left: 48px;
-    padding: 3px 0 8px;
-    font-size: 0.82rem;
-    color: #777;
-}
-
-.changed-period {
-    color: #d97878;
-}
-
-.class-row:has(+ .class-change-detail) {
-    border-bottom: none;
-}
-
-.class-change-detail {
-    padding: 0 24px 14px 110px;
-    font-size: 0.82rem;
-    color: #777;
-    line-height: 1.6;
-
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.class-change-detail.current {
-    background: #f2f5ff;
-}
-
-.class-change-detail.finished {
-    opacity: 0.6;
-}
-
-.class-change-room,
-.class-change-note {
-    display: block;
-}
-
-.class-row:has(+ .class-change-detail) {
-    border-bottom: none;
-}
-
-.class-change-detail {
-    border-bottom: 1px solid #e5e5e5;
-}
-
-*/
-
-/*----------------------------------*/
 /* 変更がある時限番号 */
 .changed-period {
     color: #d97878;
@@ -1731,20 +1718,6 @@ button {
 }
 
 
-/* 教室・備考の詳細行 */
-.class-change-detail {
-    margin: 0;
-    padding: 0 24px 14px 135px;
-
-    width: 100%;
-    box-sizing: border-box;
-
-    font-size: 0.82rem;
-    line-height: 1.55;
-    color: #777;
-
-    border-bottom: 1px solid #e5e5e5;
-}
 
 
 /* 教室と備考を別々の行にする */
@@ -1753,21 +1726,3 @@ button {
     display: block;
 }
 
-
-/* 現在授業なら詳細部分まで青い背景を続ける */
-.class-change-detail.current {
-    background: #f2f5ff;
-}
-
-
-/* 現在授業の青い左線も詳細行まで続ける */
-.class-change-detail.current {
-    border-left: 5px solid #5d82d8;
-    padding-left: 130px;
-}
-
-
-/* 終了済み */
-.class-change-detail.finished {
-    opacity: 0.6;
-}
