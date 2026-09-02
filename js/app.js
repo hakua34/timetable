@@ -5,6 +5,9 @@ import { updateToday } from "./today.js";
 import { renderWeekly } from "./weekly.js";
 import "./calendar.js";
 import "./auth.js";
+import {
+    setupNotifications
+} from "./notifications.js";
 const dateElement = document.getElementById("header-date");
 const weekdayElement = document.getElementById("header-weekday");
 const timeElement = document.getElementById("header-time");
