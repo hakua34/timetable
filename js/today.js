@@ -474,7 +474,6 @@ function renderNext(
 
 }
 
-
 // ========================================
 // 授業一覧
 // ========================================
@@ -488,143 +487,139 @@ function renderClassList(
 
     classList.innerHTML = "";
 
+    todayTimetable.forEach(
+        (subjectId, index) => {
 
-todayTimetable.forEach(
-    (subjectId, index) => {
-
-        // 授業なし
-        if (!subjectId) {
-            return;
-        }
-
-
-        const subject =
-            subjects[subjectId];
-
-        const period =
-            schedule.periods[index];
+            // 授業なし
+            if (!subjectId) {
+                return;
+            }
 
 
-        let stateClass = "";
+            const subject =
+                subjects[subjectId];
+
+            const period =
+                schedule.periods[index];
 
 
-        // 現在授業
-        if (
-            status.type === "class" &&
-            status.currentIndex === index
-        ) {
-
-            stateClass = "current";
-
-        }
+            let stateClass = "";
 
 
-        // 終了済み判定
-        const now =
-            getCurrentMinutes(
-                new Date()
-            );
-
-        const end =
-            timeToMinutes(
-                period.end
-            );
-
-        if (
-            now >= end &&
-            !(
+            // 現在授業
+            if (
                 status.type === "class" &&
                 status.currentIndex === index
-            )
-        ) {
+            ) {
 
-            stateClass =
-                "finished";
+                stateClass = "current";
 
-        }
+            }
 
 
-        // この時限に変更があるか
-        const change =
-            changes?.[index + 1];
+            // 終了済み判定
+            const now =
+                getCurrentMinutes(
+                    new Date()
+                );
 
-        const isChanged =
-            !!change;
-        
-        
-        const row =
-            document.createElement(
-                "div"
-            );
-        
-        row.className =
-            `class-row ${stateClass}`;
-        
-        row.innerHTML = `
-        
-            <span class="class-period ${isChanged ? "changed-period" : ""}">
-                ${index + 1}限
-            </span>
-        
-            <span class="class-name">
-                ${subject.name}
-            </span>
-        
-            <span class="class-time">
-                ${period.start} - ${period.end}
-            </span>
-        
-        `;
-        
-        classList.appendChild(row);
-        
-        
-        // ========================================
-        // 変更内容の追加行
-        // ========================================
-        
-        if (change?.room || change?.note) {
-        
-            const detailRow =
+            const end =
+                timeToMinutes(
+                    period.end
+                );
+
+            if (
+                now >= end &&
+                !(
+                    status.type === "class" &&
+                    status.currentIndex === index
+                )
+            ) {
+
+                stateClass =
+                    "finished";
+
+            }
+
+
+            // この時限の変更内容
+            const change =
+                changes?.[index + 1];
+
+            const isChanged =
+                !!change;
+
+            const hasDetails =
+                !!(
+                    change?.room ||
+                    change?.note
+                );
+
+
+            const row =
                 document.createElement(
                     "div"
                 );
-        
-            detailRow.className =
-                `class-change-detail ${stateClass}`;
-        
-            detailRow.innerHTML = `
-        
-                ${
-                    change?.room
-                        ? `
-                            <div class="class-change-room">
-                                教室：${change.room}
-                            </div>
-                        `
-                        : ""
-                }
-        
-                ${
-                    change?.note
-                        ? `
-                            <div class="class-change-note">
-                                ${change.note}
-                            </div>
-                        `
-                        : ""
-                }
-        
-            `;
-        
-            classList.appendChild(
-                detailRow
-            );
-        
-        }
 
-    }
-);
+            row.className =
+                `class-row ${stateClass} ${hasDetails ? "has-details" : ""}`;
+
+
+            row.innerHTML = `
+
+                <div class="class-main-row">
+
+                    <span class="class-period ${isChanged ? "changed-period" : ""}">
+                        ${index + 1}限
+                    </span>
+
+                    <span class="class-name">
+                        ${subject.name}
+                    </span>
+
+                    <span class="class-time">
+                        ${period.start} - ${period.end}
+                    </span>
+
+                </div>
+
+                ${
+                    hasDetails
+                        ? `
+                            <div class="class-change-detail">
+
+                                ${
+                                    change?.room
+                                        ? `
+                                            <div class="class-change-room">
+                                                教室：${change.room}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                                ${
+                                    change?.note
+                                        ? `
+                                            <div class="class-change-note">
+                                                ${change.note}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+                        `
+                        : ""
+                }
+
+            `;
+
+
+            classList.appendChild(row);
+
+        }
+    );
 
 }
 
@@ -705,106 +700,7 @@ function applyTodayDetails(
         });
 }
 
-function renderTodayChanges(
-    todayTimetable,
-    changes
-) {
 
-    const section =
-        document.getElementById(
-            "changes-section"
-        );
-
-    const list =
-        document.getElementById(
-            "changes-list"
-        );
-
-
-    const entries =
-        Object.entries(changes);
-
-
-    if (!entries.length) {
-
-        section.hidden = true;
-        list.innerHTML = "";
-
-        return;
-    }
-
-
-    section.hidden = false;
-    list.innerHTML = "";
-
-
-    entries.forEach(
-        ([period, change]) => {
-
-            const periodNumber =
-                Number(period);
-
-            const finalSubjectId =
-                todayTimetable[
-                    periodNumber - 1
-                ];
-
-            const finalSubject =
-                subjects[finalSubjectId];
-
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "change-card";
-
-
-            let detail = "";
-
-
-            if (change.room) {
-
-                detail += `
-                    <div class="change-room">
-                        教室：${change.room}
-                    </div>
-                `;
-            }
-
-
-            if (change.note) {
-
-                detail += `
-                    <div class="change-room">
-                        ${change.note}
-                    </div>
-                `;
-            }
-
-
-            item.innerHTML = `
-
-                <div class="change-period">
-                    ${periodNumber}限
-                </div>
-
-                <div>
-
-                    <div class="change-subject">
-                        ${finalSubject?.name || ""}
-                    </div>
-
-                    ${detail}
-
-                </div>
-            `;
-
-
-            list.appendChild(item);
-        }
-    );
-}
 
 // ========================================
 // 今日画面更新
