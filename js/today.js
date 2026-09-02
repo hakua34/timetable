@@ -576,7 +576,7 @@ function renderClassList(
                 document.createElement(
                     "div"
                 );
-
+                
             row.className =
                 `class-row ${stateClass} ${hasDetails ? "has-details" : ""} ${useGradation ? "gradation" : ""}`;
 
@@ -586,8 +586,8 @@ function renderClassList(
                 <div class="class-main-row">
 
                     <span class="class-period ${useRedPeriod ? "changed-period" : ""}">
-                        ${index + 1}限
-                    </span>
+    						${index + 1}限
+					</span>
 
                     <span class="class-name">
                         ${subject.name}
