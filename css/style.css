@@ -1706,23 +1706,3 @@ button {
     cursor: pointer;
 }
 
-/* 変更がある時限番号 */
-.changed-period {
-    color: #d97878;
-}
-
-
-/* 詳細行が続く授業は、授業行側の下罫線を消す */
-.class-row:has(+ .class-change-detail) {
-    border-bottom: none;
-}
-
-
-
-
-/* 教室と備考を別々の行にする */
-.class-change-room,
-.class-change-note {
-    display: block;
-}
-
