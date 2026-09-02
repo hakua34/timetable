@@ -1734,9 +1734,9 @@ button {
     background-image:
         linear-gradient(
             90deg,
-            #ee4141,
-            #ff4545ba 31%,
-            transparent
+            rgba(238, 65, 65, 0.24) 0%,
+            rgba(255, 69, 69, 0.13) 31%,
+            transparent 100%
         );
 }
 
