@@ -548,25 +548,44 @@ function renderClassList(
 
             const isChanged =
                 !!change;
-
+            
             const hasDetails =
-			    !!change;
-
-
+                !!(
+                    change?.room ||
+                    change?.note
+                );
+                
+            const isCurrent =
+                stateClass === "current";
+            
+            const isFinished =
+                stateClass === "finished";
+            
+            // これからの授業で変更がある時だけ赤グラデーション
+            const useGradation =
+                isChanged &&
+                !isCurrent &&
+                !isFinished;
+            
+            // 終了済みの変更授業だけ「○限」を赤くする
+            const useRedPeriod =
+                isChanged &&
+                isFinished;
+            
             const row =
                 document.createElement(
                     "div"
                 );
 
             row.className =
-                `class-row ${stateClass} ${hasDetails ? "has-details" : ""}`;
+                `class-row ${stateClass} ${hasDetails ? "has-details" : ""} ${useGradation ? "gradation" : ""}`;
 
 
             row.innerHTML = `
 
                 <div class="class-main-row">
 
-                    <span class="class-period ${isChanged ? "changed-period" : ""}">
+                    <span class="class-period ${useRedPeriod ? "changed-period" : ""}">
                         ${index + 1}限
                     </span>
 
