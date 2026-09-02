@@ -95,7 +95,11 @@ button {
 
 .page {
     display: none;
-    padding: 24px 18px;
+
+    padding:
+        24px
+        18px
+        calc(120px + env(safe-area-inset-bottom));
 }
 
 .page.active {
