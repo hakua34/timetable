@@ -91,3 +91,21 @@ navItems.forEach(item => {
     });
 
 });
+
+const notificationButton =
+    document.getElementById(
+        "notification-button"
+    );
+
+if (notificationButton) {
+
+    notificationButton.addEventListener(
+        "click",
+        async () => {
+
+            await setupNotifications();
+
+        }
+    );
+
+}
