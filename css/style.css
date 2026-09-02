@@ -1729,19 +1729,44 @@ button {
     cursor: pointer;
 }
 
-/* これからの変更授業 */
-.gradation {
-    background-image:
+/* ========================================
+   授業変更ハイライト
+======================================== */
+
+
+/* これからの変更授業
+   科目・教室・備考、変更内容に関係なく全部同じ */
+.class-row.changed-upcoming {
+    background:
         linear-gradient(
             90deg,
-            rgba(238, 65, 65, 0.24) 0%,
-            rgba(255, 69, 69, 0.13) 31%,
+            rgba(238, 65, 65, 0.18) 0%,
+            rgba(255, 69, 69, 0.10) 31%,
             transparent 100%
         );
 }
 
 
-/* 終了済みの変更授業は「○限」だけ赤 */
-.class-row.finished .class-period.changed-period {
+/* 現在の変更授業
+   赤は使わず、今までの現在授業表示 */
+.class-row.current.changed-current {
+    background: #f3f6fc;
+    background-image: none;
+
+    box-shadow:
+        inset 4px 0 0 #607dc5;
+}
+
+
+/* 終了済み変更授業
+   赤背景は一切なし */
+.class-row.finished.changed-finished {
+    background: #fafafa;
+    background-image: none;
+}
+
+
+/* 終了済みは「1限」などだけ赤 */
+.class-row.finished.changed-finished .class-period {
     color: #d97878;
 }
