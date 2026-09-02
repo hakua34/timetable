@@ -1729,3 +1729,19 @@ button {
     cursor: pointer;
 }
 
+/* これからの変更授業 */
+.gradation {
+    background-image:
+        linear-gradient(
+            90deg,
+            #ee4141,
+            #ff4545ba 31%,
+            transparent
+        );
+}
+
+
+/* 終了済みの変更授業は「○限」だけ赤 */
+.class-row.finished .class-period.changed-period {
+    color: #d97878;
+}
