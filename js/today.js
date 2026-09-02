@@ -554,31 +554,46 @@ function renderClassList(
                     change?.room ||
                     change?.note
                 );
-                
-            const isCurrent =
-                stateClass === "current";
             
-            const isFinished =
-                stateClass === "finished";
             
-            // これからの授業で変更がある時だけ赤グラデーション
-            const useGradation =
-                isChanged &&
-                !isCurrent &&
-                !isFinished;
+            // ========================================
+            // 変更状態
+            // ========================================
             
-            // 終了済みの変更授業だけ「○限」を赤くする
-            const useRedPeriod =
-                isChanged &&
-                isFinished;
+            let changeStateClass = "";
+            
+            if (isChanged) {
+            
+                if (stateClass === "finished") {
+            
+                    // 終了済み
+                    changeStateClass =
+                        "changed-finished";
+            
+                } else if (stateClass === "current") {
+            
+                    // 現在授業
+                    changeStateClass =
+                        "changed-current";
+            
+                } else {
+            
+                    // これからの授業
+                    changeStateClass =
+                        "changed-upcoming";
+            
+                }
+            
+            }
+            
             
             const row =
                 document.createElement(
                     "div"
                 );
-                
+            
             row.className =
-                `class-row ${stateClass} ${hasDetails ? "has-details" : ""} ${useGradation ? "gradation" : ""}`;
+                `class-row ${stateClass} ${changeStateClass}`;
 
 
             row.innerHTML = `
