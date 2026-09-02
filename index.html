@@ -424,60 +424,58 @@
             <!-- ========================================
                 SETTINGS
             ======================================== -->
-
+            
             <section
                 id="page-settings"
                 class="page"
             >
-
+            
                 <h1 class="simple-page-title">
                     設定
                 </h1>
-
-
+            
+            
                 <!-- アカウント -->
-
+            
                 <section class="settings-section">
-
+            
                     <h2>
                         アカウント
                     </h2>
-
-
+            
+            
                     <div class="account-card">
-
-
+            
                         <div class="account-row">
-
+            
                             <span>
                                 状態
                             </span>
-
+            
                             <strong id="account-email">
                                 ログイン不要
                             </strong>
-
+            
                         </div>
-
-
+            
+            
                         <div class="account-row">
-
+            
                             <span>
                                 権限
                             </span>
-
+            
                             <strong id="account-role">
                                 一般閲覧
                             </strong>
-
+            
                         </div>
-
+            
                     </div>
-
-
-
+            
+            
                     <!-- 一般閲覧時 -->
-
+            
                     <button
                         id="show-admin-login"
                         class="admin-login-link"
@@ -485,11 +483,10 @@
                     >
                         管理者ログイン
                     </button>
-
-
-
+            
+            
                     <!-- 管理者ログイン中のみ表示 -->
-
+            
                     <button
                         id="logout-button"
                         class="logout-button"
@@ -498,24 +495,45 @@
                     >
                         管理者からログアウト
                     </button>
-
+            
                 </section>
-
-
-
+            
+            
+                <!-- 通知 -->
+            
+                <section class="settings-section">
+            
+                    <h2>
+                        通知
+                    </h2>
+            
+                    <button
+                        id="notification-button"
+                        class="notification-button"
+                        type="button"
+                    >
+                        通知を有効にする
+                    </button>
+            
+                    <p class="settings-help">
+                        時間割や授業変更の通知を受け取ります
+                    </p>
+            
+                </section>
+            
+            
                 <!-- 管理者だけ表示 -->
-
+            
                 <section
                     id="debug-settings"
                     class="settings-section debug-section"
                     hidden
                 >
-
+            
                     <h2>
                         開発者向け
                     </h2>
-
-
+            
                     <button
                         id="clear-cache-reload"
                         class="settings-danger-button"
@@ -523,31 +541,9 @@
                     >
                         キャッシュ削除＆再読み込み
                     </button>
-
-                    <!-- 通知 -->
-                    
-                    <section class="settings-section">
-                    
-                        <h2>
-                            通知
-                        </h2>
-                    
-                        <button
-                            id="notification-button"
-                            class="notification-button"
-                            type="button"
-                        >
-                            通知を有効にする
-                        </button>
-                    
-                        <p class="settings-help">
-                            時間割や授業変更の通知を受け取ります
-                        </p>
-                    
-                    </section>
-
+            
                 </section>
-
+            
             </section>
 
         </main>
