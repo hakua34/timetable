@@ -550,10 +550,7 @@ function renderClassList(
                 !!change;
 
             const hasDetails =
-                !!(
-                    change?.room ||
-                    change?.note
-                );
+			    !!change;
 
 
             const row =
