@@ -1770,3 +1770,20 @@ button {
 .class-row.finished.changed-finished .class-period {
     color: #d97878;
 }
+
+.notification-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #5271c4;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
