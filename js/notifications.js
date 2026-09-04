@@ -1,3 +1,23 @@
+import {
+    app
+} from "./firebase.js";
+
+import {
+    getMessaging,
+    getToken,
+    isSupported,
+    onMessage
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+
+
+// ========================================
+// VAPID公開鍵
+// ========================================
+
+const VAPID_KEY =
+    "BGJEjSSZlbCY91k20OXW2r0IX1hELpomdi-T6Bb-prqYw-ZLN3-OMJylfywnQb3tehh2cfb6w8ZelbH0UE9TMbM";
+
+
 // ========================================
 // 通知
 // ========================================
@@ -30,17 +50,17 @@ export async function setupNotifications() {
         }
 
 
-        // ========================================
-        // Service Worker登録
-        // ========================================
+        const supported =
+            await isSupported();
 
-        const registration =
-            await navigator.serviceWorker.register(
-                "./sw.js"
+        if (!supported) {
+
+            alert(
+                "この端末ではFirebase通知を利用できません"
             );
 
-
-        await navigator.serviceWorker.ready;
+            return false;
+        }
 
 
         // ========================================
@@ -70,26 +90,112 @@ export async function setupNotifications() {
 
 
         // ========================================
-        // テスト通知
+        // Service Worker
         // ========================================
 
-        await registration.showNotification(
-            "TIME",
-            {
-                body:
-                    "通知の設定が完了しました！",
+        const registration =
+            await navigator.serviceWorker.register(
+                "./sw.js"
+            );
 
-                icon:
-                    "./icons/apple-touch-icon.png",
 
-                badge:
-                    "./icons/favicon-32.png"
+        await navigator.serviceWorker.ready;
+
+
+        // ========================================
+        // Firebase Messaging
+        // ========================================
+
+        const messaging =
+            getMessaging(app);
+
+
+        // ========================================
+        // FCM登録トークン取得
+        // ========================================
+
+        const token =
+            await getToken(
+                messaging,
+                {
+                    vapidKey:
+                        VAPID_KEY,
+
+                    serviceWorkerRegistration:
+                        registration
+                }
+            );
+
+
+        if (!token) {
+
+            alert(
+                "FCM登録トークンを取得できませんでした"
+            );
+
+            return false;
+        }
+
+
+        localStorage.setItem(
+            "fcmToken",
+            token
+        );
+
+
+        console.log(
+            "FCM Token:",
+            token
+        );
+
+
+        // ========================================
+        // アプリを開いている時の通知
+        // ========================================
+
+        onMessage(
+            messaging,
+            async payload => {
+
+                console.log(
+                    "FCM foreground:",
+                    payload
+                );
+
+
+                const title =
+                    payload.notification?.title ||
+                    "TIME";
+
+                const body =
+                    payload.notification?.body ||
+                    "";
+
+
+                await registration.showNotification(
+                    title,
+                    {
+                        body,
+
+                        icon:
+                            "./icons/apple-touch-icon.png",
+
+                        badge:
+                            "./icons/favicon-32.png"
+                    }
+                );
+
             }
         );
 
 
-        alert(
-            "テスト通知を送信しました"
+        // ========================================
+        // テスト用
+        // ========================================
+
+        prompt(
+            "FCM登録トークン\nFirebaseのテスト送信に貼り付けてください",
+            token
         );
 
 
@@ -99,13 +205,15 @@ export async function setupNotifications() {
     } catch (error) {
 
         console.error(
-            "通知設定エラー:",
+            "FCM設定エラー:",
             error
         );
 
+
         alert(
-            `通知設定でエラーが発生しました\n${error.message}`
+            `FCM設定でエラーが発生しました\n${error.message}`
         );
+
 
         return false;
 
