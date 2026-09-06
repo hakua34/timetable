@@ -1794,3 +1794,94 @@ button {
 
     cursor: pointer;
 }
+
+/* ========================================
+   通知設定
+======================================== */
+
+.notification-button,
+.notification-save-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #5271c4;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.notification-button:disabled {
+    background: #e9edf7;
+    color: #5271c4;
+}
+
+.notification-card {
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    border: 1px solid #ececec;
+    border-radius: 14px;
+
+    background: #fff;
+}
+
+.notification-row {
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 0 15px;
+
+    border-bottom: 1px solid #eee;
+}
+
+.notification-row:last-child {
+    border-bottom: none;
+}
+
+.notification-row span {
+    font-size: 13px;
+    color: #555;
+}
+
+.notification-row input[type="checkbox"] {
+    width: 21px;
+    height: 21px;
+
+    accent-color: #5271c4;
+}
+
+.notification-row input[type="time"] {
+    padding: 7px 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    background: #fff;
+
+    font-size: 14px;
+}
+
+.notification-row input[type="time"]:disabled {
+    opacity: 0.45;
+}
+
+.notification-save-button {
+    margin-top: 12px;
+}
+
+#notification-status {
+    min-height: 16px;
+}
