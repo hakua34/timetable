@@ -515,13 +515,14 @@
             
             
                 <!-- 通知 -->
-            
+
                 <section class="settings-section">
-            
+
                     <h2>
                         通知
                     </h2>
-            
+
+
                     <button
                         id="notification-button"
                         class="notification-button"
@@ -529,11 +530,78 @@
                     >
                         通知を有効にする
                     </button>
-            
-                    <p class="settings-help">
-                        時間割や授業変更の通知を受け取ります
-                    </p>
-            
+
+
+                    <div
+                        id="notification-settings"
+                        hidden
+                    >
+
+                        <div class="notification-card">
+
+                            <label class="notification-row">
+
+                                <span>
+                                    朝の時間割通知
+                                </span>
+
+                                <input
+                                    id="morning-notification-enabled"
+                                    type="checkbox"
+                                    checked
+                                >
+
+                            </label>
+
+
+                            <label class="notification-row">
+
+                                <span>
+                                    通知時刻
+                                </span>
+
+                                <input
+                                    id="morning-notification-time"
+                                    type="time"
+                                    value="07:00"
+                                >
+
+                            </label>
+
+
+                            <label class="notification-row">
+
+                                <span>
+                                    授業変更通知
+                                </span>
+
+                                <input
+                                    id="change-notification-enabled"
+                                    type="checkbox"
+                                    checked
+                                >
+
+                            </label>
+
+                        </div>
+
+
+                        <button
+                            id="save-notification-settings"
+                            class="notification-save-button"
+                            type="button"
+                        >
+                            設定を保存
+                        </button>
+
+
+                        <p
+                            id="notification-status"
+                            class="settings-help"
+                        ></p>
+
+                    </div>
+
                 </section>
             
             
