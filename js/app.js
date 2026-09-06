@@ -6,8 +6,8 @@ import { renderWeekly } from "./weekly.js";
 import "./calendar.js";
 import "./auth.js";
 import {
-    setupNotifications
-} from "./notifications.js";
+    initializeNotificationSettings
+} from "./notifications.js?v=20260907-1";
 const dateElement = document.getElementById("header-date");
 const weekdayElement = document.getElementById("header-weekday");
 const timeElement = document.getElementById("header-time");
@@ -92,20 +92,8 @@ navItems.forEach(item => {
 
 });
 
-const notificationButton =
-    document.getElementById(
-        "notification-button"
-    );
+// ========================================
+// 通知設定
+// ========================================
 
-if (notificationButton) {
-
-    notificationButton.addEventListener(
-        "click",
-        async () => {
-
-            await setupNotifications();
-
-        }
-    );
-
-}
+initializeNotificationSettings();
