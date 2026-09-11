@@ -1197,26 +1197,17 @@ export async function updateToday() {
             [...timetable[weekday]];
 
     } else {
-
-        todayTimetable = null;
-    }
-
-
-    // 土日かつ特別設定もない
-    if (!todayTimetable) {
-
-        currentArea.innerHTML = `
-            <div class="after-school">
-                今日は授業がありません
-            </div>
-        `;
-
-        nextCard.style.display = "none";
-        classList.innerHTML = "";
-
-        tomorrowSection.hidden = true;
-
-        return;
+    
+        // 土日は空の時間割から開始
+        // Firebaseに設定があれば後から反映する
+        todayTimetable = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ];
     }
 
 
@@ -1284,6 +1275,31 @@ export async function updateToday() {
 
         });
 
+
+    // ========================================
+    // 授業が1つもない場合
+    // ========================================
+    
+    const hasAnyClass =
+        todayTimetable.some(
+            subjectId => !!subjectId
+        );
+    
+    if (!hasAnyClass) {
+    
+        currentArea.innerHTML = `
+            <div class="after-school">
+                今日は授業がありません
+            </div>
+        `;
+    
+        nextCard.style.display = "none";
+        classList.innerHTML = "";
+    
+        tomorrowSection.hidden = true;
+    
+        return;
+    }
 
     // ========================================
     // 授業時間パターン
