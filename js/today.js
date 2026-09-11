@@ -24,6 +24,31 @@ const classList =
 
 const scheduleBadge =
     document.querySelector(".schedule-badge");
+
+    const tomorrowSection =
+    document.getElementById(
+        "tomorrow-section"
+    );
+
+const tomorrowDate =
+    document.getElementById(
+        "tomorrow-date"
+    );
+
+const tomorrowScheduleBadge =
+    document.getElementById(
+        "tomorrow-schedule-badge"
+    );
+
+const tomorrowClassList =
+    document.getElementById(
+        "tomorrow-class-list"
+    );
+
+const tomorrowNoClasses =
+    document.getElementById(
+        "tomorrow-no-classes"
+    );
 // ========================================
 // 曜日
 // ========================================
@@ -732,6 +757,410 @@ function applyTodayDetails(
 }
 
 
+// ========================================
+// 明日の時間割表示
+// ========================================
+
+async function renderTomorrow(
+    today
+) {
+
+    const tomorrow =
+        new Date(today);
+
+    tomorrow.setDate(
+        tomorrow.getDate() + 1
+    );
+
+
+    const weekdayNames = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+    ];
+
+
+    const weekday =
+        weekdayKeys[
+            tomorrow.getDay()
+        ];
+
+
+    const dayData =
+        await getDayData(
+            tomorrow
+        );
+
+
+    // ========================================
+    // ベース時間割
+    // ========================================
+
+    let tomorrowTimetable;
+
+
+    if (
+        dayData?.timetableType ===
+        "cassette"
+    ) {
+
+        tomorrowTimetable =
+            [
+                ...specialTimetables
+                    .cassette
+                    .subjects
+            ];
+
+    } else if (weekday) {
+
+        tomorrowTimetable =
+            [
+                ...timetable[
+                    weekday
+                ]
+            ];
+
+    } else {
+
+        // 土日
+        tomorrowTimetable = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ];
+
+    }
+
+
+    // ========================================
+    // 変更反映
+    // ========================================
+
+    const changes =
+        dayData?.periods ||
+        {};
+
+
+    Object.entries(
+        changes
+    )
+        .forEach(
+            ([
+                period,
+                change
+            ]) => {
+
+                const index =
+                    Number(period) - 1;
+
+
+                if (
+                    index < 0 ||
+                    index > 5
+                ) {
+
+                    return;
+
+                }
+
+
+                // 授業なし
+                if (
+                    change.subject ===
+                    "__none__"
+                ) {
+
+                    tomorrowTimetable[
+                        index
+                    ] = null;
+
+                    return;
+
+                }
+
+
+                // その他
+                if (
+                    change.subject ===
+                    "__custom__"
+                ) {
+
+                    const customId =
+                        `__tomorrow_custom_${index}`;
+
+
+                    subjects[
+                        customId
+                    ] = {
+
+                        name:
+                            change
+                                .customSubject ||
+                            "その他"
+
+                    };
+
+
+                    tomorrowTimetable[
+                        index
+                    ] =
+                        customId;
+
+                    return;
+
+                }
+
+
+                // 通常教科
+                if (
+                    change.subject
+                ) {
+
+                    tomorrowTimetable[
+                        index
+                    ] =
+                        change.subject;
+
+                }
+
+            }
+        );
+
+
+    // ========================================
+    // 授業時間
+    // ========================================
+
+    const scheduleType =
+        dayData?.scheduleType ||
+        "normal";
+
+
+    const schedule =
+        dayData
+            ?.schedule
+            ?.periods
+            ? dayData.schedule
+            : schedules[
+                scheduleType
+            ] ||
+            schedules.normal;
+
+
+    // ========================================
+    // 日付
+    // ========================================
+
+    tomorrowDate.textContent =
+        `${
+            tomorrow.getMonth() + 1
+        }月${
+            tomorrow.getDate()
+        }日（${
+            weekdayNames[
+                tomorrow.getDay()
+            ]
+        }）`;
+
+
+    tomorrowScheduleBadge
+        .textContent =
+            schedule.name ||
+            schedules[
+                scheduleType
+            ]?.name ||
+            "通常授業";
+
+
+    // ========================================
+    // 一覧生成
+    // ========================================
+
+    tomorrowClassList
+        .innerHTML = "";
+
+
+    let classCount =
+        0;
+
+
+    tomorrowTimetable
+        .forEach(
+            (
+                subjectId,
+                index
+            ) => {
+
+                if (!subjectId) {
+
+                    return;
+
+                }
+
+
+                const subject =
+                    subjects[
+                        subjectId
+                    ];
+
+
+                if (!subject) {
+
+                    return;
+
+                }
+
+
+                classCount++;
+
+
+                const period =
+                    schedule
+                        .periods[
+                            index
+                        ] ||
+                    {};
+
+
+                const change =
+                    changes[
+                        index + 1
+                    ];
+
+
+                const isTestSchedule =
+                    scheduleType ===
+                    "test";
+
+
+                const isChanged =
+                    !isTestSchedule &&
+                    !!change;
+
+
+                const hasDetails =
+                    !!(
+                        change?.room ||
+                        change?.note
+                    );
+
+
+                const row =
+                    document
+                        .createElement(
+                            "div"
+                        );
+
+
+                row.className =
+                    `class-row ${
+                        isChanged
+                            ? "changed-upcoming"
+                            : ""
+                    }`;
+
+
+                const timeText =
+                    period.start &&
+                    period.end
+                        ? `${period.start} - ${period.end}`
+                        : "";
+
+
+                row.innerHTML = `
+
+                    <div class="class-main-row">
+
+                        <span class="class-period">
+                            ${index + 1}限
+                        </span>
+
+                        <span class="class-name">
+                            ${subject.name}
+                        </span>
+
+                        <span class="class-time">
+                            ${timeText}
+                        </span>
+
+                    </div>
+
+                    ${
+                        hasDetails
+                            ? `
+                                <div class="class-change-detail">
+
+                                    ${
+                                        change?.room
+                                            ? `
+                                                <div class="class-change-room">
+                                                    教室：${change.room}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+                                    ${
+                                        change?.note
+                                            ? `
+                                                <div class="class-change-note">
+                                                    ${change.note}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+                            `
+                            : ""
+                    }
+
+                `;
+
+
+                tomorrowClassList
+                    .appendChild(
+                        row
+                    );
+
+            }
+        );
+
+
+    // ========================================
+    // 授業なし
+    // ========================================
+
+    if (
+        classCount === 0
+    ) {
+
+        tomorrowClassList
+            .innerHTML = "";
+
+        tomorrowNoClasses
+            .hidden = false;
+
+    } else {
+
+        tomorrowNoClasses
+            .hidden = true;
+
+    }
+
+
+    tomorrowSection
+        .hidden = false;
+
+}
+
 
 // ========================================
 // 今日画面更新
@@ -740,6 +1169,15 @@ function applyTodayDetails(
 export async function updateToday() {
 
     const now = new Date();
+
+
+    // 通常時は明日の授業を非表示
+    if (tomorrowSection) {
+
+        tomorrowSection.hidden =
+            true;
+
+    }
 
     const weekday =
         weekdayKeys[now.getDay()];
@@ -908,6 +1346,21 @@ export async function updateToday() {
         displayChanges
     );
 
+
+// ========================================
+// 放課後は明日の授業を表示
+// ========================================
+
+if (
+    status.type ===
+    "after-school"
+) {
+
+    await renderTomorrow(
+        now
+    );
+
+}
 
     // ========================================
     // 教室・備考変更を画面へ反映

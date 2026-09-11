@@ -1885,3 +1885,30 @@ button {
 #notification-status {
     min-height: 16px;
 }
+
+/* ========================================
+   明日の授業
+======================================== */
+
+.tomorrow-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.tomorrow-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#tomorrow-date {
+    font-size: 13px;
+    color: #777;
+}
+
+.tomorrow-schedule-badge {
+    position: static;
+}
