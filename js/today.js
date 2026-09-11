@@ -1171,14 +1171,6 @@ export async function updateToday() {
     const now = new Date();
 
 
-    // 通常時は明日の授業を非表示
-    if (tomorrowSection) {
-
-        tomorrowSection.hidden =
-            true;
-
-    }
-
     const weekday =
         weekdayKeys[now.getDay()];
 
@@ -1221,6 +1213,8 @@ export async function updateToday() {
 
         nextCard.style.display = "none";
         classList.innerHTML = "";
+
+        tomorrowSection.hidden = true;
 
         return;
     }
@@ -1359,6 +1353,10 @@ if (
     await renderTomorrow(
         now
     );
+
+} else {
+
+    tomorrowSection.hidden = true;
 
 }
 
