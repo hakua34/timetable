@@ -156,14 +156,13 @@ export const schedules = {
 // ========================================
 // 通常時間割
 // ========================================
-
 export const timetable = {
 
     monday: [
         "geography",
         "classics",
-        "scienceChoice",
         "logicExpression3",
+        "scienceChoice",
         "chemistry",
         "math3"
     ],
@@ -172,8 +171,8 @@ export const timetable = {
         "topography",
         "pe",
         "math3",
-        "englishCommunication3",
         "scienceChoice",
+        "englishCommunication3",
         null
     ],
 
@@ -206,7 +205,6 @@ export const timetable = {
 
 };
 
-
 // ========================================
 // 特別時間割
 // ========================================
@@ -218,9 +216,9 @@ export const specialTimetables = {
 
         subjects: [
             "geography",
-            "scienceChoice",
-            "chemistry",
             "math3",
+            "chemistry",
+            "scienceChoice",
             "englishCommunication3",
             null
         ]
