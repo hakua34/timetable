@@ -129,14 +129,13 @@ const subjects = {
 // ========================================
 // 通常時間割
 // ========================================
-
 const timetable = {
 
     monday: [
         "geography",
         "classics",
-        "scienceChoice",
         "logicExpression3",
+        "scienceChoice",
         "chemistry",
         "math3"
     ],
@@ -145,8 +144,8 @@ const timetable = {
         "topography",
         "pe",
         "math3",
-        "englishCommunication3",
         "scienceChoice",
+        "englishCommunication3",
         null
     ],
 
@@ -187,14 +186,13 @@ const timetable = {
 const cassetteTimetable = [
 
     "geography",
-    "scienceChoice",
-    "chemistry",
     "math3",
+    "chemistry",
+    "scienceChoice",
     "englishCommunication3",
     null
 
 ];
-
 
 // ========================================
 // 授業時間
