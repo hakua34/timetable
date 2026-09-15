@@ -1912,3 +1912,62 @@ button {
 .tomorrow-schedule-badge {
     position: static;
 }
+
+/* ========================================
+   通知端末コード
+======================================== */
+
+.notification-device-info {
+    margin-top: 16px;
+    padding: 14px;
+
+    border: 1px solid #ececec;
+    border-radius: 12px;
+
+    background: #fafafa;
+}
+
+.notification-device-label {
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.notification-device-code-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#notification-device-code {
+    flex: 1;
+
+    overflow: hidden;
+
+    padding: 9px 10px;
+
+    border-radius: 8px;
+
+    background: #f0f1f3;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.notification-device-copy {
+    flex-shrink: 0;
+
+    padding: 8px 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #e9edf7;
+    color: #5271c4;
+
+    font-size: 12px;
+    font-weight: 600;
+}
