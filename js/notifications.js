@@ -687,6 +687,67 @@ export function initializeNotificationSettings() {
     const settings =
         getSavedSettings();
 
+    const savedDeviceKey =
+        localStorage.getItem(
+            "pushDeviceKey"
+        );
+    
+    
+    const deviceCode =
+        document.getElementById(
+            "notification-device-code"
+        );
+    
+    
+    if (
+        deviceCode &&
+        savedDeviceKey
+    ) {
+    
+        deviceCode.textContent =
+            savedDeviceKey;
+    
+    }
+    
+    
+    const copyDeviceCodeButton =
+        document.getElementById(
+            "copy-notification-device-code"
+        );
+    
+    
+    copyDeviceCodeButton
+        ?.addEventListener(
+            "click",
+            async () => {
+    
+                const code =
+                    localStorage.getItem(
+                        "pushDeviceKey"
+                    );
+    
+                if (!code) {
+    
+                    setStatus(
+                        "端末コードがまだ登録されていません"
+                    );
+    
+                    return;
+    
+                }
+    
+    
+                await navigator.clipboard
+                    .writeText(code);
+    
+    
+                setStatus(
+                    "端末判別コードをコピーしました"
+                );
+    
+            }
+        );
+
 
     applySettingsToForm(
         settings
