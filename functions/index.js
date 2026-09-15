@@ -1225,8 +1225,10 @@ exports.registerPushDevice =
 
             return {
 
-                ok: true
-
+                ok: true,
+            
+                deviceKey
+            
             };
 
         }
