@@ -391,23 +391,52 @@ async function syncDevice(settings) {
         await getFcmToken();
 
 
-    await registerPushDevice({
-
-        token,
-
-        deviceId:
-            getDeviceId(),
-
-        morningEnabled:
-            settings.morningEnabled,
-
-        morningTime:
-            settings.morningTime,
-
-        changeEnabled:
-            settings.changeEnabled
-
-    });
+    const result =
+        await registerPushDevice({
+    
+            token,
+    
+            deviceId:
+                getDeviceId(),
+    
+            morningEnabled:
+                settings.morningEnabled,
+    
+            morningTime:
+                settings.morningTime,
+    
+            changeEnabled:
+                settings.changeEnabled
+    
+        });
+    
+    
+    const deviceKey =
+        result.data?.deviceKey || "";
+    
+    
+    if (deviceKey) {
+    
+        localStorage.setItem(
+            "pushDeviceKey",
+            deviceKey
+        );
+    
+    
+        const codeElement =
+            document.getElementById(
+                "notification-device-code"
+            );
+    
+    
+        if (codeElement) {
+    
+            codeElement.textContent =
+                deviceKey;
+    
+        }
+    
+    }
 
 
     if (!foregroundListenerStarted) {
