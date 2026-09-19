@@ -964,7 +964,7 @@ button {
 
 
 .calendar-card {
-    padding: 14px;
+    padding: 14px 12px;
 
     border: 1px solid #ececec;
     border-radius: 17px;
@@ -976,7 +976,7 @@ button {
 .calendar-weekdays,
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .calendar-weekdays {
@@ -984,6 +984,11 @@ button {
 }
 
 .calendar-weekdays span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 32px;
     text-align: center;
 
     font-size: 11px;
@@ -992,19 +997,18 @@ button {
     color: #888;
 }
 
-
 /* 日付 */
-
 .calendar-day {
     position: relative;
 
+    width: 100%;
     aspect-ratio: 1 / 1;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    margin: 2px;
+    margin: 0;
 
     border: none;
     border-radius: 50%;
