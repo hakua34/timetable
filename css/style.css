@@ -1975,3 +1975,70 @@ button {
     font-size: 12px;
     font-weight: 600;
 }
+
+/* ========================================
+   iPad / タブレット用カレンダー調整
+======================================== */
+
+@media (min-width: 701px) {
+
+    .calendar-card {
+        padding: 20px 18px;
+    }
+
+
+    .calendar-weekdays span {
+        height: 38px;
+
+        font-size: 14px;
+        font-weight: 650;
+    }
+
+
+    .calendar-grid {
+        row-gap: 8px;
+    }
+
+
+    .calendar-day {
+        width: 52px;
+        height: 52px;
+
+        aspect-ratio: auto;
+
+        margin: 0 auto;
+
+        font-size: 16px;
+    }
+
+
+    .calendar-day.today::after {
+        bottom: 5px;
+
+        width: 4px;
+        height: 4px;
+    }
+
+
+    .calendar-month {
+        font-size: 22px;
+    }
+
+
+    .calendar-arrow {
+        width: 42px;
+        height: 42px;
+
+        font-size: 28px;
+    }
+
+
+    .selected-date {
+        font-size: 22px;
+    }
+
+
+    .selected-weekday {
+        font-size: 14px;
+    }
+}
