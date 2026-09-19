@@ -405,113 +405,188 @@ async function renderSelectedDay() {
 
 
     // ====================================
-    // 変更件数
+    // その日の最終時間割を作る
     // ====================================
 
     const periodChanges =
         dayData?.periods || {};
 
-    // テスト日程では、設定した教科は
-    // 「変更」ではなく正式なテスト時間割として扱う
     const isTestSchedule =
         scheduleType === "test";
+
+
+    const timetableRows =
+        Array.from(
+            {
+                length: 6
+            },
+            (_, index) => {
+
+                const periodNumber =
+                    index + 1;
+
+                const change =
+                    periodChanges[periodNumber] ||
+                    {};
+
+                const originalSubjectId =
+                    isTestSchedule
+                        ? null
+                        : classes[index] || null;
+
+
+                let subjectName =
+                    originalSubjectId
+                        ? subjects[originalSubjectId]?.name ||
+                            "授業なし"
+                        : "授業なし";
+
+
+                // 授業なし
+                if (
+                    change.subject ===
+                    "__none__"
+                ) {
+
+                    subjectName =
+                        "授業なし";
+
+                }
+
+
+                // その他
+                else if (
+                    change.subject ===
+                    "__custom__"
+                ) {
+
+                    subjectName =
+                        change.customSubject?.trim() ||
+                        "その他";
+
+                }
+
+
+                // 通常教科
+                else if (change.subject) {
+
+                    subjectName =
+                        subjects[change.subject]?.name ||
+                        change.subject;
+
+                }
+
+
+                const period =
+                    schedule.periods?.[index] ||
+                    {};
+
+                const timeText =
+                    period.start &&
+                    period.end
+                        ? `${period.start} - ${period.end}`
+                        : "";
+
+
+                const hasChange =
+                    !isTestSchedule &&
+                    !!(
+                        change.subject ||
+                        change.room ||
+                        change.note
+                    );
+
+
+                const isEmpty =
+                    subjectName ===
+                    "授業なし";
+
+
+                return `
+
+                    <div
+                        class="
+                            calendar-timetable-row
+                            ${hasChange ? "changed" : ""}
+                            ${isEmpty ? "empty" : ""}
+                        "
+                    >
+
+                        <div class="calendar-timetable-period">
+                            ${periodNumber}限
+                        </div>
+
+
+                        <div class="calendar-timetable-main">
+
+                            <div class="calendar-timetable-subject">
+
+                                ${subjectName}
+
+                                ${
+                                    hasChange
+                                        ? `
+                                            <span class="calendar-timetable-change">
+                                                変更
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+
+                            ${
+                                change.room
+                                    ? `
+                                        <div class="calendar-timetable-detail">
+                                            教室：${change.room}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+
+                            ${
+                                change.note
+                                    ? `
+                                        <div class="calendar-timetable-detail">
+                                            ${change.note}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="calendar-timetable-time">
+                            ${timeText}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
 
     const changeCount =
         isTestSchedule
             ? 0
-            : Object.keys(periodChanges).length;
+            : Object.values(periodChanges)
+                .filter(change => {
 
+                    return !!(
+                        change.subject ||
+                        change.room ||
+                        change.note
+                    );
 
-    // ====================================
-    // 変更一覧
-    // ====================================
-
-    let changesHTML = "";
-
-
-    if (!isTestSchedule) {
-
-        Object.entries(periodChanges)
-            .forEach(([period, change]) => {
-
-            const periodNumber =
-                Number(period);
-
-            const originalSubjectId =
-                classes[periodNumber - 1];
-
-            const originalSubject =
-                subjects[originalSubjectId];
-
-            const changedSubject =
-                subjects[change.subject];
-
-
-            let description = "";
-
-
-            // 教科変更
-            if (
-                change.subject &&
-                changedSubject
-            ) {
-
-                description += `
-                    <div class="calendar-change-title">
-                        ${periodNumber}限
-                        ${originalSubject?.name || ""}
-                        <span>→</span>
-                        <strong>
-                            ${changedSubject.name}
-                        </strong>
-                    </div>
-                `;
-
-            } else {
-
-                description += `
-                    <div class="calendar-change-title">
-                        ${periodNumber}限
-                        ${originalSubject?.name || ""}
-                    </div>
-                `;
-
-            }
-
-
-            // 教室
-            if (change.room) {
-
-                description += `
-                    <div class="calendar-change-detail">
-                        教室：${change.room}
-                    </div>
-                `;
-
-            }
-
-
-            // 備考
-            if (change.note) {
-
-                description += `
-                    <div class="calendar-change-detail">
-                        ${change.note}
-                    </div>
-                `;
-
-            }
-
-
-            changesHTML += `
-                <div class="calendar-change-item">
-                    ${description}
-                </div>
-            `;
-
-        });
-    }
-
+                })
+                .length;
 
     // ====================================
     // 描画
@@ -562,15 +637,9 @@ async function renderSelectedDay() {
         </div>
 
 
-        ${
-            changesHTML
-                ? `
-                    <div class="calendar-changes">
-                        ${changesHTML}
-                    </div>
-                `
-                : ""
-        }
+        <div class="calendar-timetable">
+            ${timetableRows}
+        </div>
 
 
         ${
