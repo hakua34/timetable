@@ -795,6 +795,9 @@ async function renderTomorrow(
             tomorrow
         );
 
+    const isHoliday =
+        dayData?.scheduleType ===
+        "holiday";
 
     // ========================================
     // ベース時間割
@@ -803,7 +806,18 @@ async function renderTomorrow(
     let tomorrowTimetable;
 
 
-    if (
+    if (isHoliday) {
+
+        tomorrowTimetable = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ];
+
+    } else if (
         dayData?.timetableType ===
         "cassette"
     ) {
@@ -1177,6 +1191,35 @@ export async function updateToday() {
     const dayData =
         await getDayData(now);
 
+    // ========================================
+    // 休日
+    // ========================================
+
+    if (
+        dayData?.scheduleType ===
+        "holiday"
+    ) {
+
+        scheduleBadge.textContent =
+            "休日";
+
+        currentArea.innerHTML = `
+            <div class="after-school">
+                今日は休日です
+            </div>
+        `;
+
+        nextCard.style.display =
+            "none";
+
+        classList.innerHTML =
+            "";
+
+        tomorrowSection.hidden =
+            true;
+
+        return;
+    }
 
     // ========================================
     // 今日のベース時間割
@@ -1419,4 +1462,3 @@ setInterval(
     updateToday,
     10000
 );
-

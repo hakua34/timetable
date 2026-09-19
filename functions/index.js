@@ -1304,6 +1304,22 @@ exports.sendScheduledNotifications =
                 daySnapshot.val() ||
                 null;
 
+            // ========================================
+            // 休日は通知しない
+            // ========================================
+
+            if (
+                dayData?.scheduleType ===
+                "holiday"
+            ) {
+
+                console.log(
+                    "休日のため通知スキップ:",
+                    now.dateKey
+                );
+
+                return;
+            }
 
             const devices =
                 Object.entries(
@@ -1356,6 +1372,62 @@ exports.sendScheduledNotifications =
                     dayData
                 );
 
+            // ========================================
+            // 実際に授業があるか確認
+            // ========================================
+
+            const hasAnyClass =
+                finalTimetable.periods
+                    .some(period => {
+
+                        const change =
+                            period.change;
+
+                        // 明示的に授業なし
+                        if (
+                            change?.subject ===
+                            "__none__"
+                        ) {
+
+                            return false;
+                        }
+
+
+                        // その他
+                        if (
+                            change?.subject ===
+                            "__custom__"
+                        ) {
+
+                            return !!(
+                                change.customSubject &&
+                                change.customSubject.trim()
+                            );
+                        }
+
+
+                        // Firebaseで教科指定あり
+                        if (change?.subject) {
+
+                            return true;
+                        }
+
+
+                        // 通常時間割に授業あり
+                        return !!period.originalSubjectId;
+
+                    });
+
+
+            if (!hasAnyClass) {
+
+                console.log(
+                    "授業なしのため通知スキップ:",
+                    now.dateKey
+                );
+
+                return;
+            }
 
             // ========================================
             // 朝の時間割通知

@@ -304,6 +304,41 @@ async function renderSelectedDay() {
     if (!isSameDate(targetDate, selectedDate)) {
         return;
     }
+    // ====================================
+    // 休日
+    // ====================================
+
+    if (
+        dayData?.scheduleType ===
+        "holiday"
+    ) {
+
+        dayInfo.innerHTML = `
+
+            <div class="no-school-day">
+                休日
+            </div>
+
+            ${
+                dayData?.note
+                    ? `
+                        <div class="day-note">
+
+                            <div class="day-note-label">
+                                備考
+                            </div>
+
+                            ${dayData.note}
+
+                        </div>
+                    `
+                    : ""
+            }
+
+        `;
+
+        return;
+    }
 
 
     // ====================================

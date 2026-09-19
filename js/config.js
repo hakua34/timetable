@@ -138,6 +138,18 @@ export const schedules = {
         ]
     },
 
+    holiday: {
+        name: "休日",
+        periods: [
+            { start: "", end: "" },
+            { start: "", end: "" },
+            { start: "", end: "" },
+            { start: "", end: "" },
+            { start: "", end: "" },
+            { start: "", end: "" }
+        ]
+    },
+
     custom: {
         name: "その他",
         periods: [
