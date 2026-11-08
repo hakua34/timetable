@@ -64,6 +64,12 @@ export const subjects = {
         note: ""
     },
 
+    japanese: {
+        name: "国語",
+        room: "",
+        note: ""
+    },
+
     lhr: {
         name: "LHR",
         room: "",
@@ -171,48 +177,48 @@ export const schedules = {
 export const timetable = {
 
     monday: [
+        "englishCommunication3",
+        "englishCommunication3",
         "geography",
-        "classics",
-        "logicExpression3",
         "scienceChoice",
-        "chemistry",
+        "logicExpression3",
         "math3"
     ],
 
     tuesday: [
-        "topography",
+        "logicExpression3",
         "pe",
-        "math3",
         "scienceChoice",
-        "englishCommunication3",
+        "geography",
+        "chemistry",
         null
     ],
 
     wednesday: [
         "math3",
-        "logicalJapanese",
-        "geography",
+        "japanese",
+        "japanese",
         "pe",
-        "chemistry",
+        "scienceChoice",
         "lhr"
     ],
 
     thursday: [
         "math3",
-        "scienceChoice",
+        "math3",
+        "topography",
         "topography",
         "chemistry",
-        "classics",
         "englishCommunication3"
     ],
 
     friday: [
-        "logicalJapanese",
+        "chemistry",
         "pe",
         "englishCommunication3",
         "math3",
         "math3",
-        "logicExpression3"
+        "logicalJapanese"
     ]
 
 };
@@ -231,7 +237,7 @@ export const specialTimetables = {
             "math3",
             "chemistry",
             "scienceChoice",
-            "englishCommunication3",
+            "classics",
             null
         ]
     }
